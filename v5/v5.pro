@@ -3,16 +3,14 @@
 ######################################################################
 
 TEMPLATE = app
-DEPENDPATH += popup splashscreen popup/splash
-INCLUDEPATH += . splashscreen popup popup/splash
+DEPENDPATH += popup popup/splash
+INCLUDEPATH += . popup popup/splash
 
 # Input
-HEADERS += popup/popup.h \
-           splashscreen/splashscreen.h \
-           popup/splash/display.h \
-           popup/splash/screen.h
+HEADERS += popup/popup.hpp \
+           popup/splash/display.hpp \
+           popup/splash/screen.hpp
 SOURCES += main.cpp \
            popup/popup.cpp \
-           splashscreen/splashscreen.cpp \
            popup/splash/display.cpp \
            popup/splash/screen.cpp

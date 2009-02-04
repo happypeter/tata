@@ -1,42 +1,49 @@
-#include "display.h"
-#include <qtextstream.h>
-#include <qlayout.h>
-#include <qframe.h>
-#include <qlineedit.h>
-#include <qstring.h>
-#include <qstringlist.h>
-#include <qpushbutton.h>
-#include <qtimer.h>
-#include <qfile.h>
-#include <qpainter.h>
+#include <QTextStream>
+#include <QLayout>
+#include <QFrame>
+#include <QLineEdit>
+#include <QString>
+#include <QStringList>
+#include <QPushButton>
+#include <QTimer>
+#include <QFile>
+#include <QPainter>
 #include <iostream>
-#include "./xpm/good.xpm"
-#include "./xpm/start.xpm"
+
+#include "display.hpp"
+
 using namespace std;
-                                                                             
                                                                                 
 QStringList strlist;
 QStringList ::Iterator it;
 
-DisplayWidget::DisplayWidget():QWidget()//0,0,WStyle_Customize|WStyle_NoBorder)
+DisplayWidget::DisplayWidget()
+    :  QWidget()
 {
-	QVBoxLayout *vbox = new QVBoxLayout( this, 10 );
-	QHBoxLayout *hbox = new QHBoxLayout( vbox );
-	lineEdit = new QLineEdit(this);
+	QGridLayout *layout = new QGridLayout;
+
+	lineEdit = new QLineEdit;
 	lineEdit->setReadOnly( TRUE );
-	hbox->addWidget( lineEdit );
-	screen1 = new Screen( this ); 
-	vbox->addWidget( screen1 ); 
-     	startButton = new QPushButton( this );
+	layout->addWidget( lineEdit, 0, 0 );
+
+	screen1 = new Screen; 
+	layout->addWidget( screen1, 1, 0, 1, 3 ); 
+
+     	startButton = new QPushButton;
 //	startButton->setPixmap(QPixmap(start_xpm));
 	startButton->setText(tr("Start"));
-	stopButton = new QPushButton( this );
+	stopButton = new QPushButton;
 	stopButton->setText( tr( "Stop" ) );
-	hbox->addWidget( startButton );
-	hbox->addWidget( stopButton );
-	peter_fullscreenshow();
+	layout->addWidget( startButton, 0, 1 );
+	layout->addWidget( stopButton , 0, 2 );
+
+	setLayout(layout);
+
+	peter_fullscreenshow();  // --> QWidget::showFullScreen();
+
 	connect( startButton, SIGNAL( clicked () ), SLOT( start() ) );
 	connect( stopButton, SIGNAL( clicked () ), SLOT( stop() ) );
+
 	time = 0;
 	yval = 0.0;
 //	setBackgroundColor(blue);
@@ -46,49 +53,52 @@ DisplayWidget::DisplayWidget():QWidget()//0,0,WStyle_Customize|WStyle_NoBorder)
 void DisplayWidget::run()
 {
 	timer = new QTimer( this );
-	connect( timer, SIGNAL( timeout() ), SLOT( tick() ) );                      	timer->start( 500 );
-}                                                                        
-                                                                                
+	connect( timer, SIGNAL( timeout() ), SLOT( tick() ) );
+      	timer->start( 500 );
+}
+
 void DisplayWidget::tick()
 {       
 	yval = readCurveData();
-	screen1->animate( yval );
+
 	lineEdit->setText( QString::number( yval ) );
+	screen1->update();
 }
 
 void DisplayWidget::stop()
 {
 	timer->stop();
-	close();
+	screen1->set_animate( false );
+//	close();
 }
-                                                                                
 
 void DisplayWidget::start()
 {
-
+	screen1->set_animate( true );
 	run();
 }
 
 QSize DisplayWidget::sizeHint() const
 {
 	return QSize( 16 * Margin, 12 * Margin );
-}                                                                                
+}
+
 void DisplayWidget::peter_fullscreenshow()
 {
-	showFullScreen();
+	//showFullScreen();
 }
 
 void DisplayWidget::readFile()
 {
         QFile file("in.txt");
-        file.open(IO_ReadOnly);
+        file.open( QIODevice::ReadOnly );
+
         QTextStream in(&file);      
-        str = in.read();
-	strlist = QStringList::split(" ", str);
+        str = in.read(1000);
+	strlist = str.split(" ");
         it = strlist.begin();
-
-
 }
+
 double DisplayWidget::readCurveData()
 {
         QString tempStr;
