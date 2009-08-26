@@ -35,26 +35,26 @@ void Screen::set_animate( bool b )
 
 void Screen::paintEvent( QPaintEvent *e )
 {
-//    cout << "Screen::paintEvent...\n" << endl;
-
-    if( m_pixmap.isNull() )
-    {
+	 cout << "Screen::paintEvent...\n" << endl;
+	if( m_pixmap.isNull() )
+	{
 	m_pixmap = QPixmap( size() );
-    }
-
-    painter.begin( &m_pixmap );
-
-    initNumber();
-    initCordinate();
-
-    if ( m_animate )
-	updateCurve( );
-
-    painter.end();
-
-// copy backing pixmap to screen
-    QPainter painter2( this );
-    painter2.drawPixmap( 0, 0, m_pixmap );
+	}
+	painter.begin( &m_pixmap );
+	initNumber();
+	initCordinate();
+	if ( m_animate )
+	{	
+		cout << "1111111111\n" << endl;
+		updateCurve( );
+	}
+	painter.end();
+	// copy backing pixmap to screen
+	QRectF target(30.0, 30.0, 130.0, 130.0);
+	QRectF source(0.0, 0.0, 100.0, 100.0);
+	QPainter painter2( this );
+	painter2.drawPixmap( 0, 0, m_pixmap );
+	painter2.drawPixmap(target,m_pixmap, source);
 }
 
 void Screen::resizeEvent( QResizeEvent *e )
@@ -242,9 +242,7 @@ void Screen::animate( double y )
     //            Yval.append( newY );
 //the y here is the value in in.txt, so when animate() is executed, the value
 //in in.txt become a element of vector Yval.
-        }
-        
-        updateCurve();
+        }        
 
 }
 

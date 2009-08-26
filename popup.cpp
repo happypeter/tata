@@ -52,7 +52,7 @@ Frame::Frame(QWidget* parent, const char* name)
 	move( scr_size.width()/2 - size().width()/2,
 	      scr_size.height()/2 - size().height()/2 );
 
-	resize(320,240);
+	resize(640,480);
 
 //	QPixmap pix(desktop_xpm);
 //	setBackgroundPixmap(pix);
