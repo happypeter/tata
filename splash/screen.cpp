@@ -40,8 +40,12 @@ void Screen::paintEvent( QPaintEvent *e )
 		m_pixmap = QPixmap( size() );
 	}
 	painter.begin( &m_pixmap );
-	initNumber();
-	initCordinate();
+	if(firstShow)
+	{	
+		firstShow=false;
+		initNumber();
+		initCordinate();
+	}
 	if( m_animate )
 	{	
 		cout << "m_animate==true, running updateCurve\n" << endl;
@@ -77,8 +81,6 @@ void Screen::setYTitle( QString str )
 
 void Screen::initNumber( )
 {
-	if(firstShow)	///peter
-	{////peter
 	cout<<"initNumber()"<<endl;
 	QRect newWindow = painter.window();
 	newY = 0;
@@ -133,14 +135,10 @@ void Screen::initNumber( )
 		rectCordinate.width() - Step - 1,
 		rectCordinate.height() + 2 * BaseLineLenght + BaseFontHeight );
 //peter	painter.drawRect(toNewRect);
-	}///////////peter
 }
 
 void Screen::initCordinate()
 {
-  if ( firstShow )
-  {    
-	firstShow=false;
 	cout<<"void Screen::initCordinate()"<<endl;    
 	painter.setPen( Qt::blue );
 	painter.drawRect( rectCordinate );
@@ -221,8 +219,6 @@ void Screen::initCordinate()
          painter.drawText( rectXText.topLeft().x(), rectXText.topLeft().y(),
  	                          rectXText.width(), rectXText.height(),
  	                          Qt::AlignCenter, stringXTitle );
-                        
-  }
 
 }
 
@@ -249,10 +245,6 @@ void Screen::animate( double y )
 void Screen::updateCurve()
 {
 //    cout<<"Ynew is now :"<<Ynew<<endl;
-      ////////////////peter/////////////////////////
-//rectCordinate.bottomLeft().y()
-//rectCordinate.bottomRight().y()
-//
 	QRectF target(
 			rectCordinate.topLeft().x() + 1, 
 			rectCordinate.topLeft().y() + 1, 
