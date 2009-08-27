@@ -299,65 +299,64 @@ void Screen::updateCurve()
         drawDotLine = !drawDotLine;
 
         /*draw the calibration values of x-axis*/
-        static int numX = 0;
-        if ( 0 == numX % (2*Step) )
-        {
+	static int numX = 0;
+	if ( 0 == numX % (2*Step) )
+	{
                
-            int low = hour % 10;
-            int high = hour / 10;
-            QString timeString;        
-            timeString += ( QString( "%1%2:").arg(high).arg(low) );
-            low = min % 10;
-            high = min / 10;
-            timeString += ( QString( "%1%2:").arg(high).arg(low) );
-            low = sec % 10;
-            high = sec / 10;
-            timeString += ( QString( "%1%2").arg(high).arg(low) );                
+		int low = hour % 10;
+		int high = hour / 10;
+		QString timeString;        
+		timeString += ( QString( "%1%2:").arg(high).arg(low) );
+		low = min % 10;
+		high = min / 10;
+		timeString += ( QString( "%1%2:").arg(high).arg(low) );
+		low = sec % 10;
+		high = sec / 10;
+		timeString += ( QString( "%1%2").arg(high).arg(low) );                
 
-            /*draw the long calibration */
-            painter.drawLine( 
-                    toNewRect.bottomRight().x(), 
-                    rectCordinate.bottomRight().y() + BaseLineLenght,
-                    toNewRect.bottomRight().x(), 
-                    rectCordinate.bottomRight().y() + 2 * BaseLineLenght );
-
-            /*draw the dotline in the vertical direction*/
-            painter.save();
-            painter.setPen( QPen( Qt::yellow, 1, Qt::DotLine) );
-            painter.drawLine( 
-                    toNewRect.bottomRight().x(), 
-                    rectCordinate.bottomRight().y(), 
-                    toNewRect.topRight().x(),
-                    rectCordinate.topRight().y() );
-            painter.restore();
-    
-            /*draw the calibration values of x-axis*/
-            if ( 0 == numX % (4*Step) )
-            {
+		/*draw the long calibration---the little line right above the time string */
 		painter.drawLine( 
-		    toNewRect.bottomRight().x(), 
-		    rectCordinate.bottomRight().y() + 2*BaseLineLenght,
-		    toNewRect.bottomRight().x(), 
-		    rectCordinate.bottomRight().y() + 3 * Step );
+				toNewRect.bottomRight().x(), 
+				rectCordinate.bottomRight().y() + BaseLineLenght,
+				toNewRect.bottomRight().x(), 
+				rectCordinate.bottomRight().y() + 2 * BaseLineLenght );
+
+		/*draw the dotline in the vertical direction*/
+		painter.save();
+		painter.setPen( QPen( Qt::yellow, 1, Qt::DotLine) );
+		painter.drawLine( 
+				toNewRect.bottomRight().x(), 
+				rectCordinate.bottomRight().y(), 
+				toNewRect.topRight().x(),
+				rectCordinate.topRight().y() );
+		painter.restore();
+
+		/*draw the calibration values of x-axis*/
+		if ( 0 == numX % (4*Step) )
+		{
+			painter.drawLine( 
+				toNewRect.bottomRight().x(), 
+				rectCordinate.bottomRight().y() + 2*BaseLineLenght,
+				toNewRect.bottomRight().x(), 
+				rectCordinate.bottomRight().y() + 3 * Step );
                 
-		painter.setPen( Qt::green );
+			painter.setPen( Qt::green );
 		//display time in green
        
-		QRect rectCValue(
-		    toNewRect.bottomRight().x() - 9 * Step,
-		    toNewRect.bottomRight().y() - BaseFontHeight+2,
-		    10 * Step, 
-		    BaseFontHeight );
-
-		painter.drawText( 
-		    rectCValue.topLeft().x(), 
-		    rectCValue.topLeft().y(), 
-		    rectCValue.width(), 
-		    rectCValue.height(),
-		    //  AlignRight |
-		    Qt::AlignHCenter, 
-		    timeString );
-            }
+			QRect rectCValue(
+				toNewRect.bottomRight().x() - 9 * Step,
+				toNewRect.bottomRight().y() - BaseFontHeight+2,
+				10 * Step, 
+				BaseFontHeight );
+			painter.drawText( 
+				rectCValue.topLeft().x(), 
+				rectCValue.topLeft().y(), 
+				rectCValue.width(), 
+				rectCValue.height(),
+//				AlignRight |
+				Qt::AlignHCenter, 
+				timeString );
+		}
 
             sec += 10;
             if ( 60 == sec )
