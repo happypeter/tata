@@ -123,17 +123,17 @@ void Screen::initNumber( )
             newWindow.bottomLeft().y() - FrameWidth - BaseFontHeight,
             rectCordinate.width(), BaseFontHeight );
            
-    fromSaveRect.setRect( 
-            rectCordinate.topLeft().x() + Step,
-            rectCordinate.topLeft().y() + 1,
-            rectCordinate.width() - Step - 1,
-            rectCordinate.height() + 2 * BaseLineLenght + BaseFontHeight );
-    toNewRect.setRect(
-            rectCordinate.topLeft().x() + 1,
-            rectCordinate.topLeft().y() + 1,
-            rectCordinate.width() - Step - 1,
-            rectCordinate.height() + 2 * BaseLineLenght + BaseFontHeight );
-    painter.drawRect(toNewRect);
+	fromSaveRect.setRect( 
+		rectCordinate.topLeft().x() + Step,
+		rectCordinate.topLeft().y() + 1,
+		rectCordinate.width() - Step - 1,
+		rectCordinate.height() + 2 * BaseLineLenght + BaseFontHeight );
+	toNewRect.setRect(
+		rectCordinate.topLeft().x() + 1,
+		rectCordinate.topLeft().y() + 1,
+		rectCordinate.width() - Step - 1,
+		rectCordinate.height() + 2 * BaseLineLenght + BaseFontHeight );
+	painter.drawRect(toNewRect);
 }
 
 void Screen::initCordinate()
@@ -250,7 +250,9 @@ void Screen::updateCurve()
         int Xnew, Xold;
         Ynew = rectCordinate.bottomRight().y() - Ynew - 1;
         Xnew = rectCordinate.bottomRight().x() -1;
+//"-1" to avoid the X-axis
         Yold = rectCordinate.bottomRight().y() - Yold- 1;
+//"-1" to avoid the Y-axis
         Xold = rectCordinate.bottomRight().x() - Step;
 
 //Yold=Ynew;
