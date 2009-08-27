@@ -227,19 +227,20 @@ void Screen::initCordinate()
 void Screen::animate( double y )
 {
         
-       // newY = y;
-     Ynew=y;
-       
-//        if ( (int) Yval.size() <= (int) width() / 4 )
-        {
-//                Yval.append( newY );
-//        } else {
-  //              Yval.erase( Yval.begin() );
-    //            Yval.append( newY );
-//the y here is the value in in.txt, so when animate() is executed, the value
-//in in.txt become a element of vector Yval.
-        }        
-
+	Ynew=y;
+	/*       
+	if ( (int) Yval.size() <= (int) width() / 4 )
+	{
+		Yval.append( newY );
+	} 
+	else 
+	{
+		Yval.erase( Yval.begin() );
+		Yval.append( newY );
+	//the y here is the value in in.txt, so when animate() is executed, the value
+	//in in.txt become a element of vector Yval.
+	}        
+	*/
 }
 
 void Screen::updateCurve()
