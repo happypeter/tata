@@ -244,7 +244,25 @@ void Screen::animate( double y )
 void Screen::updateCurve()
 {
 //    cout<<"Ynew is now :"<<Ynew<<endl;
-       
+      ////////////////peter/////////////////////////
+//rectCordinate.bottomLeft().y()
+//rectCordinate.bottomRight().y()
+//
+	QRectF target(
+			rectCordinate.topLeft().x() + 1, 
+			rectCordinate.topLeft().y() + 1, 
+			rectCordinate.width() - Step - 2, 
+			rectCordinate.height()+30);
+	
+	QRectF source(
+                        rectCordinate.topLeft().x() + Step + 1,
+                        rectCordinate.topLeft().y() + 1, 
+                        rectCordinate.width() - Step - 2, 
+                        rectCordinate.height()+30);
+
+  	painter.drawPixmap(target,m_pixmap, source);
+
+///////////////////////////////////////////////////////
         int Xnew, Xold;
         Ynew = rectCordinate.bottomRight().y() - Ynew - 1;
         Xnew = rectCordinate.bottomRight().x() -1;
