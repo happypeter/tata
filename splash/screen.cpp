@@ -252,9 +252,9 @@ void Screen::updateCurve()
 			rectCordinate.height()+30);
 	
 	QRectF source(
-                        rectCordinate.topLeft().x() + Step + 1,
+                        rectCordinate.topLeft().x() + Step,
                         rectCordinate.topLeft().y() + 1, 
-                        rectCordinate.width() - Step - 2, 
+                        rectCordinate.width() - Step - 1, 
                         rectCordinate.height()+30);
 
   	painter.drawPixmap(target,m_pixmap, source);
