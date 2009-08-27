@@ -62,6 +62,7 @@ void DisplayWidget::tick()
 
 	lineEdit->setText( QString::number( yval ) );
 	screen1->update();
+//every time update() is called, paintEvent() will be executed, right?
 }
 
 void DisplayWidget::stop()

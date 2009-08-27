@@ -32,7 +32,6 @@ void Screen::set_animate( bool b )
 {
 	m_animate = b;
 }
-
 void Screen::paintEvent( QPaintEvent *e )
 {
 	cout << "Screen::paintEvent...\n" << endl;
@@ -50,8 +49,8 @@ void Screen::paintEvent( QPaintEvent *e )
 	}
 	painter.end();
 	// copy backing pixmap to screen
-	QPainter painter2( this );
-	painter2.drawPixmap( 0, 0, m_pixmap );
+	QPainter painter( this );
+	painter.drawPixmap( 0, 0, m_pixmap );
 }
 
 void Screen::resizeEvent( QResizeEvent *e )
@@ -78,6 +77,9 @@ void Screen::setYTitle( QString str )
 
 void Screen::initNumber( )
 {
+	if(firstShow)	///peter
+	{////peter
+	cout<<"initNumber()"<<endl;
 	QRect newWindow = painter.window();
 	newY = 0;
 	oldY =0;
@@ -130,13 +132,16 @@ void Screen::initNumber( )
 		rectCordinate.topLeft().y() + 1,
 		rectCordinate.width() - Step - 1,
 		rectCordinate.height() + 2 * BaseLineLenght + BaseFontHeight );
-	painter.drawRect(toNewRect);
+//peter	painter.drawRect(toNewRect);
+	}///////////peter
 }
 
 void Screen::initCordinate()
 {
   if ( firstShow )
-  {        
+  {    
+	firstShow=false;
+	cout<<"void Screen::initCordinate()"<<endl;    
 	painter.setPen( Qt::blue );
 	painter.drawRect( rectCordinate );
 	//one debugging trick is you can comment out the above line, 
