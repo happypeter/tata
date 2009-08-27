@@ -14,9 +14,9 @@
 using namespace std;
 
 Screen::Screen( QWidget *parent )
-    : QFrame( parent ),
-      firstShow( true ),
-      m_animate( false )
+	: QFrame( parent ),
+	firstShow( true ),
+	m_animate( false )
 {
 	setLineWidth( FrameWidth );        
 	setFrameStyle( Panel | Sunken );
@@ -30,20 +30,20 @@ Screen::Screen( QWidget *parent )
 
 void Screen::set_animate( bool b )
 {
-    m_animate = b;
+	m_animate = b;
 }
 
 void Screen::paintEvent( QPaintEvent *e )
 {
-	 cout << "Screen::paintEvent...\n" << endl;
+	cout << "Screen::paintEvent...\n" << endl;
 	if( m_pixmap.isNull() )
 	{
-	m_pixmap = QPixmap( size() );
+		m_pixmap = QPixmap( size() );
 	}
 	painter.begin( &m_pixmap );
 	initNumber();
 	initCordinate();
-	if ( m_animate )
+	if( m_animate )
 	{	
 		cout << "m_animate==true, running updateCurve\n" << endl;
 		updateCurve( );
@@ -56,26 +56,24 @@ void Screen::paintEvent( QPaintEvent *e )
 
 void Screen::resizeEvent( QResizeEvent *e )
 {
-//    cout << "Screen::resizeEvent.....\n";
-
-    m_pixmap = QPixmap( size() );
-    m_pixmap.fill();
-
-    update();
+//	cout << "Screen::resizeEvent.....\n";
+	m_pixmap = QPixmap( size() );
+	m_pixmap.fill();
+	update();
 }
 
 QSize Screen::minimumSize () const
 {
-    return QSize( 20 * SpaceMargin,  20 * SpaceMargin );
+	return QSize( 20 * SpaceMargin,  20 * SpaceMargin );
 }
 
 void Screen::setXTitle(  QString str )
 {
-    stringXTitle = str;
+	stringXTitle = str;
 }
 void Screen::setYTitle( QString str )
 {
-    stringYTitle = str;
+	stringYTitle = str;
 }
 
 void Screen::initNumber( )
@@ -88,11 +86,14 @@ void Screen::initNumber( )
 	hour = 0;
 
     	stringXTitle = QObject::tr( "Time (hh:mm:ss)" );
-//rectCordinate is the rect area of the Cordinate, including the axises.
+	//rectCordinate is the rect area of the Cordinate, including the axises.
 	rectCordinate.setRect( 	newWindow.topLeft().x()+FrameWidth + 2 * BaseFontHeight 
-				+ 2 * BaseLineLenght,newWindow.topLeft().y() + FrameWidth + 2 * SpaceMargin,
-				newWindow.width() - 2 * ( FrameWidth + BaseFontHeight + BaseLineLenght + SpaceMargin),
-				newWindow.height() - 2 * ( FrameWidth + BaseFontHeight + BaseLineLenght + SpaceMargin ) );
+				+ 2 * BaseLineLenght,newWindow.topLeft().y() 
+				+ FrameWidth + 2 * SpaceMargin,
+				newWindow.width() 
+				- 2 * ( FrameWidth + BaseFontHeight + BaseLineLenght + SpaceMargin),
+				newWindow.height() 
+				- 2 * ( FrameWidth + BaseFontHeight + BaseLineLenght + SpaceMargin ) );
            
 	if ( 0 != ( rectCordinate.width() % (Step*Step) ) )
 	{
@@ -119,12 +120,12 @@ void Screen::initNumber( )
 			rectCordinate.width(), BaseFontHeight );
            
 	fromSaveRect.setRect( 
-		rectCordinate.topLeft().x() + Step,
-		rectCordinate.topLeft().y() + 1,
-		rectCordinate.width() - Step - 1,
-		rectCordinate.height() + 2 * BaseLineLenght + BaseFontHeight );
+			rectCordinate.topLeft().x() + Step,
+			rectCordinate.topLeft().y() + 1,
+			rectCordinate.width() - Step - 1,
+			rectCordinate.height() + 2 * BaseLineLenght + BaseFontHeight );
 	toNewRect.setRect(
-//toNewRect is the rect area we cut and moved left
+	//toNewRect is the rect area we cut and moved left
 		rectCordinate.topLeft().x() + 1,
 		rectCordinate.topLeft().y() + 1,
 		rectCordinate.width() - Step - 1,
