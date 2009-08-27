@@ -292,7 +292,7 @@ void Screen::updateCurve()
                      painter.setPen( QPen( Qt::blue, 1, Qt::DotLine) );
                      painter.drawLine( toNewRect.bottomRight().x() , y0, 
                              rectCordinate.bottomRight().x(), y0 );
-//draw the X-axis dotlion, it works perfectly
+//draw the X-axis dotline, it works perfectly
                 }
         }
         painter.restore();
@@ -323,7 +323,7 @@ void Screen::updateCurve()
 
             /*draw the dotline in the vertical direction*/
             painter.save();
-            painter.setPen( QPen( Qt::blue, 1, Qt::DotLine) );
+            painter.setPen( QPen( Qt::yellow, 1, Qt::DotLine) );
             painter.drawLine( 
                     toNewRect.bottomRight().x(), 
                     rectCordinate.bottomRight().y(), 
@@ -379,7 +379,7 @@ void Screen::updateCurve()
                 numX = 0;
        
         painter.setPen( Qt::red );
-        painter.drawLine( Xold, (int)Yold, Xnew, (int)Ynew );
+//        painter.drawLine( Xold, (int)Yold, Xnew, (int)Ynew );
 
 
         Yold = rectCordinate.bottomRight().y() - Ynew - 1;
