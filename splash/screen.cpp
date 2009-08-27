@@ -301,7 +301,7 @@ void Screen::updateCurve()
         /*draw the calibration values of x-axis*/
 	static int numX = 0;
 	if ( 0 == numX % (2*Step) )
-	{
+	{//since Step==5, so this block will be executed once every 10 times updateCurve() is called
                
 		int low = hour % 10;
 		int high = hour / 10;
@@ -324,6 +324,7 @@ void Screen::updateCurve()
 		/*draw the dotline in the vertical direction*/
 		painter.save();
 		painter.setPen( QPen( Qt::yellow, 1, Qt::DotLine) );
+		cout<<"draw the dotline in the vertical direction"<<endl;
 		painter.drawLine( 
 				toNewRect.bottomRight().x(), 
 				rectCordinate.bottomRight().y(), 
@@ -333,7 +334,7 @@ void Screen::updateCurve()
 
 		/*draw the calibration values of x-axis*/
 		if ( 0 == numX % (4*Step) )
-		{
+		{//since Step==5, so this block will be executed once every 20 times updateCurve() is called
 			painter.drawLine( 
 				toNewRect.bottomRight().x(), 
 				rectCordinate.bottomRight().y() + 2*BaseLineLenght,
