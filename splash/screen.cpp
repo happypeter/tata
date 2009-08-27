@@ -136,13 +136,14 @@ void Screen::initCordinate()
 {
   if ( firstShow )
   {        
-        painter.setPen( Qt::blue );
-        painter.drawRect( rectCordinate );
-      
-        int y0 = rectCordinate.bottomLeft().y();
-        int x0 = rectCordinate.bottomLeft().x();
-        int yText = 0;
-//        int xText= 0;
+	painter.setPen( Qt::blue );
+	painter.drawRect( rectCordinate );
+	//one debugging trick is you can comment out the above line, 
+	//then you can see what is the real area of rectCordinate 	
+	int y0 = rectCordinate.bottomLeft().y();
+	int x0 = rectCordinate.bottomLeft().x();
+	int yText = 0;
+//	int xText= 0;
         for (int j=0; j<=numYTicks; j++ )
         {
                 painter.drawLine( x0-BaseLineLenght, y0, x0, y0 );
