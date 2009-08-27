@@ -342,10 +342,10 @@ void Screen::updateCurve()
 				rectCordinate.bottomRight().y() + 3 * Step );
                 
 			painter.setPen( Qt::green );
-		//display time in green
+			//display time in green
        
 			QRect rectCValue(
-				toNewRect.bottomRight().x() - 9 * Step,
+				toNewRect.bottomRight().x() - 10 * Step,
 				toNewRect.bottomRight().y() - BaseFontHeight+2,
 				10 * Step, 
 				BaseFontHeight );
@@ -354,7 +354,6 @@ void Screen::updateCurve()
 				rectCValue.topLeft().y(), 
 				rectCValue.width(), 
 				rectCValue.height(),
-//				AlignRight |
 				Qt::AlignHCenter, 
 				timeString );
 		}
