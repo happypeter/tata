@@ -259,18 +259,13 @@ void Screen::updateCurve()
 
   	painter.drawPixmap(target,m_pixmap, source);
 
-///////////////////////////////////////////////////////
         int Xnew, Xold;
         Ynew = rectCordinate.bottomRight().y() - Ynew - 1;
         Xnew = rectCordinate.bottomRight().x() -1;
-//"-1" to avoid the X-axis
+	//"-1" to avoid the X-axis
         Yold = rectCordinate.bottomRight().y() - Yold- 1;
-//"-1" to avoid the Y-axis
+	//"-1" to avoid the Y-axis
         Xold = rectCordinate.bottomRight().x() - Step;
-
-//Yold=Ynew;
-//give the used Ynew to Yold, Ynew will be renewed when animate() is executed 
-//again        
 
         painter.setPen( Qt::blue );
         painter.drawLine( toNewRect.bottomRight().x(), rectCordinate.bottomRight().y(),
@@ -284,19 +279,19 @@ void Screen::updateCurve()
         static bool drawDotLine = false;
 
         painter.save();
-        if ( drawDotLine )
-        {
-                for (int j =0; j < (numYTicks /5 -1 ); j++)
-                {
-		    y0 -= 5*Step;
-                     painter.setPen( QPen( Qt::blue, 1, Qt::DotLine) );
-                     painter.drawLine( toNewRect.bottomRight().x() , y0, 
-                             rectCordinate.bottomRight().x(), y0 );
-//draw the X-axis dotline, it works perfectly
-                }
-        }
-        painter.restore();
-        drawDotLine = !drawDotLine;
+	if ( drawDotLine )
+	{
+		for (int j =0; j < (numYTicks /5 -1 ); j++)
+		{
+			y0 -= 5*Step;
+			painter.setPen( QPen( Qt::blue, 1, Qt::DotLine) );
+			painter.drawLine( toNewRect.bottomRight().x() , y0, 
+			rectCordinate.bottomRight().x(), y0 );
+			//draw the X-axis dotline, it works perfectly
+		}
+	}
+	painter.restore();
+	drawDotLine = !drawDotLine;
 
         /*draw the calibration values of x-axis*/
 	static int numX = 0;
@@ -377,13 +372,15 @@ void Screen::updateCurve()
         numX ++;
         if ( numX >= 100 )
                 numX = 0;
-       
+
+	cout<<"rectCordinate.bottomRight().y()"<<rectCordinate.bottomRight().y()<<endl;
+	cout<<"rectCordinate.topRight().y()"<<rectCordinate.topRight().y()<<endl;
+	cout<<"Ynew:"<<Ynew<<endl;
+
         painter.setPen( Qt::red );
-//        painter.drawLine( Xold, (int)Yold, Xnew, (int)Ynew );
-
-
-        Yold = rectCordinate.bottomRight().y() - Ynew - 1;
-//this line is used to update Yold with the used Ynew 
+	painter.drawLine( Xold, (int)Yold, Xnew, (int)Ynew );
+	Yold = rectCordinate.bottomRight().y() - Ynew - 1;
+	//this line is used to update Yold with the used Ynew 
 }
 
 
