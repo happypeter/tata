@@ -248,7 +248,7 @@ void Screen::updateCurve()
 	QRectF target(
 			rectCordinate.topLeft().x() + 1, 
 			rectCordinate.topLeft().y() + 1, 
-			rectCordinate.width() - Step - 2, 
+			rectCordinate.width() - Step - 1, 
 			rectCordinate.height()+30);
 	
 	QRectF source(
