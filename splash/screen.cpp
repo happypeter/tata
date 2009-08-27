@@ -254,7 +254,7 @@ void Screen::updateCurve()
 	QRectF source(
                         rectCordinate.topLeft().x() + Step + 1,
                         rectCordinate.topLeft().y() + 1, 
-                        rectCordinate.width() - Step - 3, 
+                        rectCordinate.width() - Step - 2, 
                         rectCordinate.height()+30);
 
   	painter.drawPixmap(target,m_pixmap, source);
@@ -340,7 +340,8 @@ void Screen::updateCurve()
 		    toNewRect.bottomRight().x(), 
 		    rectCordinate.bottomRight().y() + 3 * Step );
                 
-		painter.setPen( Qt::blue );
+		painter.setPen( Qt::green );
+		//display time in green
        
 		QRect rectCValue(
 		    toNewRect.bottomRight().x() - 9 * Step,
