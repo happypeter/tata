@@ -281,7 +281,7 @@ void Screen::updateCurve()
         /*draw the dotline in the horizontal direction*/
         int y0 = rectCordinate.bottomRight().y();
 
-        static bool drawDotLine = FALSE;
+        static bool drawDotLine = false;
 
         painter.save();
         if ( drawDotLine )
@@ -289,9 +289,10 @@ void Screen::updateCurve()
                 for (int j =0; j < (numYTicks /5 -1 ); j++)
                 {
 		    y0 -= 5*Step;
-                     painter.setPen( QPen( Qt::yellow, 1, Qt::DotLine) );
+                     painter.setPen( QPen( Qt::blue, 1, Qt::DotLine) );
                      painter.drawLine( toNewRect.bottomRight().x() , y0, 
                              rectCordinate.bottomRight().x(), y0 );
+//draw the X-axis dotlion, it works perfectly
                 }
         }
         painter.restore();
