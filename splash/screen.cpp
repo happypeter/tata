@@ -80,48 +80,43 @@ void Screen::setYTitle( QString str )
 
 void Screen::initNumber( )
 {
-    QRect newWindow = painter.window();
+	QRect newWindow = painter.window();
+	newY = 0;
+	oldY =0;
+	sec = 0;
+	min = 0;
+	hour = 0;
 
-    newY = 0;
-    oldY =0; 
-
-    sec = 0;
-    min = 0;
-    hour = 0;
-    
-    stringXTitle = QObject::tr( "Time (hh:mm:ss)" );
-       
-    rectCordinate.setRect( newWindow.topLeft().x()+FrameWidth + 2 * BaseFontHeight 
-			+ 2 * BaseLineLenght,newWindow.topLeft().y() + FrameWidth 
-			+ 2 * SpaceMargin,newWindow.width() 
-			- 2 * ( FrameWidth + BaseFontHeight + BaseLineLenght + SpaceMargin) ,
-			newWindow.height() 
-			- 2 * ( FrameWidth + BaseFontHeight + BaseLineLenght + SpaceMargin ) );
+    	stringXTitle = QObject::tr( "Time (hh:mm:ss)" );
+//rectCordinate is the rect area of the Cordinate, including the axises.
+	rectCordinate.setRect( 	newWindow.topLeft().x()+FrameWidth + 2 * BaseFontHeight 
+				+ 2 * BaseLineLenght,newWindow.topLeft().y() + FrameWidth + 2 * SpaceMargin,
+				newWindow.width() - 2 * ( FrameWidth + BaseFontHeight + BaseLineLenght + SpaceMargin),
+				newWindow.height() - 2 * ( FrameWidth + BaseFontHeight + BaseLineLenght + SpaceMargin ) );
            
+	if ( 0 != ( rectCordinate.width() % (Step*Step) ) )
+	{
+		int x = rectCordinate.width() % ( Step * Step );     
+		rectCordinate.setWidth( rectCordinate.width() - x+1 );
+	}
 
-    if ( 0 != ( rectCordinate.width() % (Step*Step) ) )
-    {
-            int x = rectCordinate.width() % ( Step * Step );     
-            rectCordinate.setWidth( rectCordinate.width() - x+1 );
-    }
-
-    if ( 0 != ( rectCordinate.height() % (Step*Step) ) )
-    {
-            int y = rectCordinate.height() % (Step*Step);                                
-            rectCordinate.setHeight( rectCordinate.height() - y+1 );
-    }
-    numXTicks = rectCordinate.width() / Step;
-    numYTicks = rectCordinate.height() / Step;
+	if ( 0 != ( rectCordinate.height() % (Step*Step) ) )
+	{
+		int y = rectCordinate.height() % (Step*Step);                                
+		rectCordinate.setHeight( rectCordinate.height() - y+1 );
+	}
+	numXTicks = rectCordinate.width() / Step;
+	numYTicks = rectCordinate.height() / Step;   
+	
+	rectYText.setRect( 
+			newWindow.topLeft().x() + FrameWidth,
+			newWindow.topLeft().y() + FrameWidth + 2 * SpaceMargin,
+			BaseFontHeight, rectCordinate.height() );
            
-    rectYText.setRect( 
-                    newWindow.topLeft().x() + FrameWidth,
-                    newWindow.topLeft().y() + FrameWidth + 2 * SpaceMargin,
-                    BaseFontHeight, rectCordinate.height() );
-           
-    rectXText.setRect(
-            rectCordinate.bottomLeft().x(), 
-            newWindow.bottomLeft().y() - FrameWidth - BaseFontHeight,
-            rectCordinate.width(), BaseFontHeight );
+	rectXText.setRect(
+			rectCordinate.bottomLeft().x(), 
+			newWindow.bottomLeft().y() - FrameWidth - BaseFontHeight,
+			rectCordinate.width(), BaseFontHeight );
            
 	fromSaveRect.setRect( 
 		rectCordinate.topLeft().x() + Step,
@@ -129,6 +124,7 @@ void Screen::initNumber( )
 		rectCordinate.width() - Step - 1,
 		rectCordinate.height() + 2 * BaseLineLenght + BaseFontHeight );
 	toNewRect.setRect(
+//toNewRect is the rect area we cut and moved left
 		rectCordinate.topLeft().x() + 1,
 		rectCordinate.topLeft().y() + 1,
 		rectCordinate.width() - Step - 1,
