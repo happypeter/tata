@@ -45,16 +45,13 @@ void Screen::paintEvent( QPaintEvent *e )
 	initCordinate();
 	if ( m_animate )
 	{	
-		cout << "1111111111\n" << endl;
+		cout << "m_animate==true, running updateCurve\n" << endl;
 		updateCurve( );
 	}
 	painter.end();
 	// copy backing pixmap to screen
-	QRectF target(30.0, 30.0, 130.0, 130.0);
-	QRectF source(0.0, 0.0, 100.0, 100.0);
 	QPainter painter2( this );
 	painter2.drawPixmap( 0, 0, m_pixmap );
-	painter2.drawPixmap(target,m_pixmap, source);
 }
 
 void Screen::resizeEvent( QResizeEvent *e )
