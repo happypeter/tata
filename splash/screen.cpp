@@ -254,7 +254,7 @@ void Screen::updateCurve()
 	QRectF source(
                         rectCordinate.topLeft().x() + Step + 1,
                         rectCordinate.topLeft().y() + 1, 
-                        rectCordinate.width() - Step - 2, 
+                        rectCordinate.width() - Step - 3, 
                         rectCordinate.height()+30);
 
   	painter.drawPixmap(target,m_pixmap, source);
@@ -289,7 +289,7 @@ void Screen::updateCurve()
                 for (int j =0; j < (numYTicks /5 -1 ); j++)
                 {
 		    y0 -= 5*Step;
-                     painter.setPen( QPen( Qt::blue, 1, Qt::DotLine) );
+                     painter.setPen( QPen( Qt::yellow, 1, Qt::DotLine) );
                      painter.drawLine( toNewRect.bottomRight().x() , y0, 
                              rectCordinate.bottomRight().x(), y0 );
                 }
