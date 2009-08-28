@@ -262,9 +262,9 @@ void Screen::updateCurve()
 /**here I am doing sth stupid**/
 
         QRectF target2(
-                        rectCordinate.topRight().x()-Step-1,
+                        rectCordinate.topRight().x()-Step+1,
                         rectCordinate.topLeft().y() + 1,
-                        Step,
+                        Step-1,
                         rectCordinate.height()+30);
 
         QRectF source2(
@@ -274,6 +274,7 @@ void Screen::updateCurve()
                         rectCordinate.height()+30);
 //here we need to make the leftmost strip white
 	painter.drawPixmap(target2, m_pixmap, source2);
+
 /**   end   **/
 
 
