@@ -259,6 +259,24 @@ void Screen::updateCurve()
                         rectCordinate.height()+30);
 
   	painter.drawPixmap(target,m_pixmap, source);
+/**here I am doing sth stupid**/
+
+        QRectF target2(
+                        rectCordinate.topRight().x()-Step-1,
+                        rectCordinate.topLeft().y() + 1,
+                        Step,
+                        rectCordinate.height()+30);
+
+        QRectF source2(
+                        rectCordinate.topRight().x()+2,
+                        rectCordinate.topLeft().y() + 1,
+                        Step,
+                        rectCordinate.height()+30);
+//here we need to make the leftmost strip white
+	painter.drawPixmap(target2, m_pixmap, source2);
+/**   end   **/
+
+
 
         int Xnew, Xold;
         Ynew = rectCordinate.bottomRight().y() - Ynew - 1;
@@ -379,6 +397,12 @@ void Screen::updateCurve()
 	cout<<"Ynew:"<<Ynew<<endl;
 
         painter.setPen( Qt::red );
+
+	cout<<"Xold----"<<Xold<<endl;
+	cout<<"Yold----"<<Yold<<endl;
+	cout<<"Xnew----"<<Xnew<<endl;
+	cout<<"Ynew----"<<Ynew<<endl;
+
 	painter.drawLine( Xold, (int)Yold, Xnew, (int)Ynew );
 	Yold = rectCordinate.bottomRight().y() - Ynew - 1;
 	//this line is used to update Yold with the used Ynew 
