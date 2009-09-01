@@ -5,7 +5,7 @@
 #include <QPushButton>
 #include <QLineEdit>
 
-#include "splash/display.hpp"
+#include "splash/display.h"
 
 class Frame : public QFrame
 {

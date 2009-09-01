@@ -1,180 +1,186 @@
 #include <QApplication>
-#include <QPainter>
-#include <QPixmap>
 #include <QEvent>
-#include <QRect>
 #include <QSize>
-#include <QString>
 #include <iostream>
 #include <QFont>
 #include <QPen>
+#include <QStylePainter>
 
-#include "screen.hpp"
-
+#include "screen.h"
 using namespace std;
 
 Screen::Screen( QWidget *parent )
-	: QFrame( parent ),
-	firstShow( true ),
-	m_animate( false )
+    : QFrame( parent ),
+      firstShow( true ),
+      m_animate( false )
 {
 	setLineWidth( FrameWidth );        
 	setFrameStyle( Panel | Sunken );
 	setBackgroundRole( QPalette::Base );
-	firstShow = true;
 	QPalette palette;
 	palette.setColor( backgroundRole(), Qt::black);
 	setPalette(palette);
-}
 
+        savePixmap=QPixmap( size() );
+        savePixmap.fill( this, 0, 0 );
+        midPixmap=QPixmap( size() );
+        midPixmap.fill( this, 0, 0 );
+	sec=0;
+	min=0;
+	hour=0;
+//	refreshPixmap();
+}
 
 void Screen::set_animate( bool b )
 {
-	m_animate = b;
-}
-void Screen::paintEvent( QPaintEvent *e )
-{
-	cout << "Screen::paintEvent...\n" << endl;
-	if( m_pixmap.isNull() )
-	{
-		m_pixmap = QPixmap( size() );
-	}
-	painter.begin( &m_pixmap );
-	if(firstShow)
-	{	
-		firstShow=false;
-		initNumber();
-		initCordinate();
-	}
-	if( m_animate )
-	{	
-		cout << "m_animate==true, running updateCurve\n" << endl;
-		updateCurve( );
-	}
-	painter.end();
-	// copy backing pixmap to screen
-	QPainter painter( this );
-	painter.drawPixmap( 0, 0, m_pixmap );
+    m_animate = b;
 }
 
-void Screen::resizeEvent( QResizeEvent *e )
+void Screen::paintEvent( QPaintEvent * /*event*/ )
 {
-//	cout << "Screen::resizeEvent.....\n";
-	m_pixmap = QPixmap( size() );
-	m_pixmap.fill();
-	update();
+/*   if( newPixmap.isNull() )
+    {
+	newPixmap = QPixmap( size() );
+    }
+    painter.begin( &newPixmap );
+
+    initNumber();
+    drawCordinate();
+
+    if ( m_animate )
+	drawCurve( );
+
+    painter.end();*/
+
+    QStylePainter painter1( this );
+    painter1.drawPixmap( 0, 0, newPixmap);
 }
 
-QSize Screen::minimumSize () const
+void Screen::resizeEvent( QResizeEvent * /*event*/ )
 {
-	return QSize( 20 * SpaceMargin,  20 * SpaceMargin );
+     newPixmap = QPixmap( size() );
+     newPixmap.fill(this,0,0);
+     refreshPixmap();
+ 
+}
+
+void Screen::refreshPixmap()
+{  
+  if (! m_animate )
+   {
+	QPainter painter(&newPixmap);
+	painter.initFrom(this);
+        initNumber(painter);
+        drawCordinate(painter); }
+  else{
+        drawCurve();}
+  	update();	    
+}
+
+QSize Screen::minimumSizeHint() const
+{
+    return QSize( 20 * SpaceMargin,  20 * SpaceMargin );
 }
 
 void Screen::setXTitle(  QString str )
 {
-	stringXTitle = str;
-}
-void Screen::setYTitle( QString str )
-{
-	stringYTitle = str;
+    stringXTitle = str;
 }
 
-void Screen::initNumber( )
+void Screen::setYTitle(  QString str )
 {
-	cout<<"initNumber()"<<endl;
-	QRect newWindow = painter.window();
-	newY = 0;
-	oldY =0;
-	sec = 0;
-	min = 0;
-	hour = 0;
-
-    	stringXTitle = QObject::tr( "Time (hh:mm:ss)" );
-	//rectCordinate is the rect area of the Cordinate, including the axises.
-	rectCordinate.setRect( 	newWindow.topLeft().x()+FrameWidth + 2 * BaseFontHeight 
-				+ 2 * BaseLineLenght,newWindow.topLeft().y() 
-				+ FrameWidth + 2 * SpaceMargin,
-				newWindow.width() 
-				- 2 * ( FrameWidth + BaseFontHeight + BaseLineLenght + SpaceMargin),
-				newWindow.height() 
-				- 2 * ( FrameWidth + BaseFontHeight + BaseLineLenght + SpaceMargin ) );
-           
-	if ( 0 != ( rectCordinate.width() % (Step*Step) ) )
-	{
-		int x = rectCordinate.width() % ( Step * Step );     
-		rectCordinate.setWidth( rectCordinate.width() - x+1 );
-	}
-
-	if ( 0 != ( rectCordinate.height() % (Step*Step) ) )
-	{
-		int y = rectCordinate.height() % (Step*Step);                                
-		rectCordinate.setHeight( rectCordinate.height() - y+1 );
-	}
-	numXTicks = rectCordinate.width() / Step;
-	numYTicks = rectCordinate.height() / Step;   
-	
-	rectYText.setRect( 
-			newWindow.topLeft().x() + FrameWidth,
-			newWindow.topLeft().y() + FrameWidth + 2 * SpaceMargin,
-			BaseFontHeight, rectCordinate.height() );
-           
-	rectXText.setRect(
-			rectCordinate.bottomLeft().x(), 
-			newWindow.bottomLeft().y() - FrameWidth - BaseFontHeight,
-			rectCordinate.width(), BaseFontHeight );
-           
-	fromSaveRect.setRect( 
-			rectCordinate.topLeft().x() + Step,
-			rectCordinate.topLeft().y() + 1,
-			rectCordinate.width() - Step - 1,
-			rectCordinate.height() + 2 * BaseLineLenght + BaseFontHeight );
-	toNewRect.setRect(
-	//toNewRect is the rect area we cut and moved left
-		rectCordinate.topLeft().x() + 1,
-		rectCordinate.topLeft().y() + 1,
-		rectCordinate.width() - Step - 1,
-		rectCordinate.height() + 2 * BaseLineLenght + BaseFontHeight );
-//peter	painter.drawRect(toNewRect);
+    stringYTitle = str;
 }
 
-void Screen::initCordinate()
+void Screen::initNumber(QPainter &painter)
+{  
+    QRect newWindow = painter.window();
+    
+    stringXTitle = QObject::tr( "Time (hh:mm:ss)" );
+       
+    rectCordinate.setRect( newWindow.left()+FrameWidth + 2 * BaseFontHeight 
+			+ 2 * BaseLineLenght,newWindow.top() + FrameWidth 
+			+ 2 * SpaceMargin,newWindow.width() 
+			- 2 * ( FrameWidth + BaseFontHeight + BaseLineLenght + SpaceMargin) ,
+			newWindow.height() 
+			- 2 * ( FrameWidth + BaseFontHeight + BaseLineLenght + SpaceMargin ) );
+           
+
+    if ( 0 != ( rectCordinate.width() % (Step*Step) ) )
+    {
+            int x = rectCordinate.width() % ( Step * Step );     
+            rectCordinate.setWidth( rectCordinate.width() - x+1 );
+    }
+
+    if ( 0 != ( rectCordinate.height() % (Step*Step) ) )
+    {
+            int y = rectCordinate.height() % (Step*Step);                                
+            rectCordinate.setHeight( rectCordinate.height() - y+1 );
+    }
+    numXTicks = (rectCordinate.width()-1) / Step;
+    numYTicks = (rectCordinate.height()-1) / Step;
+           
+    rectYText.setRect( 
+            newWindow.left() + FrameWidth-10,
+            newWindow.top() + FrameWidth + 2 * SpaceMargin,
+            BaseFontHeight+5, rectCordinate.height() );
+    rectXText.setRect(
+            rectCordinate.left(), 
+            newWindow.bottom() - FrameWidth - BaseFontHeight,
+            rectCordinate.width(), BaseFontHeight );
+           
+    fromSaveRect.setRect( 
+            rectCordinate.left() + Step,
+            rectCordinate.top() + 1,
+            rectCordinate.width() - Step - 1, 
+            rectCordinate.height() + 2 * BaseLineLenght + 2*BaseFontHeight);
+    toNewRect.setRect(
+            rectCordinate.left() + 1,
+            rectCordinate.top() + 1,
+            rectCordinate.width() - Step - 1,
+            rectCordinate.height() + 2 * BaseLineLenght +2* BaseFontHeight);
+}
+
+void Screen::drawCordinate(QPainter &painter)
 {
-	cout<<"void Screen::initCordinate()"<<endl;    
-	painter.setPen( Qt::blue );
-	painter.drawRect( rectCordinate );
-	//one debugging trick is you can comment out the above line, 
-	//then you can see what is the real area of rectCordinate 	
-	int y0 = rectCordinate.bottomLeft().y();
-	int x0 = rectCordinate.bottomLeft().x();
-	int yText = 0;
-//	int xText= 0;
+  if ( firstShow )
+  {        
+        int y0 = rectCordinate.bottom();
+        int x0 = rectCordinate.left();
+        int yText = 0;
+
         for (int j=0; j<=numYTicks; j++ )
-        {
-                painter.drawLine( x0-BaseLineLenght, y0, x0, y0 );
-                if (0==j%Step )
-                {
-                        painter.drawLine( x0 - 2 * BaseLineLenght, y0, x0 - BaseLineLenght, y0 );
-                        painter.save();
-                        painter.setPen( QPen( Qt::blue, 1, Qt::DotLine) );
-                        painter.drawLine( x0 , y0, rectCordinate.bottomRight().x(), y0 );
-                        painter.restore();
-                        painter.setPen( Qt::red );
-                        painter.drawText( x0 - 2 * BaseLineLenght - BaseFontHeight ,
-                        			y0 - 2 * BaseFontHeight + 5 * Step ,
-                        			BaseFontHeight ,
+        {    
+            painter.setPen(QPen(Qt::blue,1,Qt::SolidLine) );    
+	    painter.drawLine( x0-BaseLineLenght, y0, x0, y0 );
+         if (j%Step==0){
+                        painter.drawLine( x0-2*BaseLineLenght, y0, x0-BaseLineLenght, y0 );
+                        
+              if(j==0){
+			painter.drawLine( x0 , y0, rectCordinate.right(), y0 );}
+              if(j==numYTicks){
+		         painter.drawLine( x0 , rectCordinate.top(),
+				 rectCordinate.right(), rectCordinate.top() );}
+                       else{
+			painter.setPen( QPen( Qt::blue, 1, Qt::DotLine) );
+                        painter.drawLine( x0 , y0, rectCordinate.right(), y0 ); }
+   
+			painter.setPen( Qt::red );
+                        painter.drawText( x0 - 3 * BaseLineLenght - BaseFontHeight ,
+                        			y0 -2* BaseFontHeight+ 3* Step ,
+                        			BaseFontHeight+3 ,
                         			BaseFontHeight + Step ,
-                        			Qt::AlignCenter ,
+                        			Qt::AlignCenter|Qt::AlignTop ,
                         			QString::number( yText) );
                         yText ++;
                         painter.setPen( Qt::blue );
                 }
                 y0 -= Step;
         }
-        
-        painter.save();
-
-        QRect tempYText( 
-                rectYText.topLeft().x(), rectYText.topLeft().y(),
+	
+	painter.save();	
+	QRect tempYText( 
+                rectYText.left(), rectYText.top(),
                 rectYText.height(), rectYText.height() );
         painter.setViewport( tempYText );
         QRect rectYViewport = painter.viewport();
@@ -182,7 +188,7 @@ void Screen::initCordinate()
         rectYViewport.width(), rectYViewport.height() );
         QRect rectYWindow = painter.window();
         QRect rectDrawText( 
-                rectYWindow.topLeft().x(),
+                rectYWindow.left(),
                 -(int)rectYText.width()/2,
                 rectYText.height(), 
                 rectYText.width() );
@@ -191,222 +197,195 @@ void Screen::initCordinate()
         dy = dy > 0 ? dy : ( -dy );
         painter.translate( 0, -dy );
         painter.drawText( 
-                rectDrawText.topLeft().x(), 
-                rectDrawText.topLeft().y(), 
-                rectDrawText.width(), 
-                rectDrawText.height(),
-                Qt::AlignCenter, stringYTitle );
+                rectDrawText.left(), 
+                rectDrawText.top(), 
+                rectDrawText.width()+5, 
+                rectDrawText.height()+5,
+                Qt::AlignHCenter, stringYTitle );
         painter.restore();
-
-      
+       
         painter.setPen( Qt::blue );
-        y0 = rectCordinate.bottomLeft().y();
+        y0=rectCordinate.bottom(); 
         for ( int i = 0; i <= numXTicks; i ++ )
         {
-                painter.drawLine( x0 , y0, x0, y0 + BaseLineLenght );
+              painter.setPen(QPen(Qt::blue,1,Qt::SolidLine) );  
+	      painter.drawLine( x0 , y0, x0, y0 + BaseLineLenght );
                 if ( 0 == i % (2*Step) )
                 {
-                     painter.save();
-                     painter.setPen( QPen( Qt::blue, 1, Qt::DotLine) );
-                     painter.drawLine( x0 , rectCordinate.bottomLeft().y(), 
-                     x0 , rectCordinate.topLeft().y() );
-                     painter.restore();
+               	   if(i==0){
+			 painter.drawLine( x0, y0, x0, rectCordinate.top());}
+		   if(i==numXTicks){
+			 painter.drawLine( rectCordinate.right(),y0, 
+			        	rectCordinate.right(),rectCordinate.top());}
+	            else{
+		     painter.setPen( QPen( Qt::blue, 1, Qt::DotLine) );
+                     painter.drawLine( x0, rectCordinate.bottom(), 
+                    		 x0, rectCordinate.top()); }
+                    
                 }
 
                 x0 += Step;
         }
         
-         painter.drawText( rectXText.topLeft().x(), rectXText.topLeft().y(),
- 	                          rectXText.width(), rectXText.height(),
- 	                          Qt::AlignCenter, stringXTitle );
+         painter.drawText( rectXText.left(), rectXText.top(),
+ 	                          rectXText.width(), rectXText.height()+5,
+ 	                          Qt::AlignCenter, stringXTitle );                     
+  }
 
 }
-
-
 
 void Screen::animate( double y )
 {
-        
-	Ynew=y;
-	/*       
-	if ( (int) Yval.size() <= (int) width() / 4 )
-	{
-		Yval.append( newY );
-	} 
-	else 
-	{
-		Yval.erase( Yval.begin() );
-		Yval.append( newY );
-	//the y here is the value in in.txt, so when animate() is executed, the value
-	//in in.txt become a element of vector Yval.
-	}        
-	*/
+        double newY;  
+	 newY = y;
+  if ( (int) Yval.size() <= (int) width() / 4 )
+
+        {    Yval.append( newY );
+       
+	     } else {
+
+              Yval.erase( Yval.begin() );
+              Yval.append( newY );}
+
 }
 
-void Screen::updateCurve()
-{
-//    cout<<"Ynew is now :"<<Ynew<<endl;
-	QRectF target(
-			rectCordinate.topLeft().x() + 1, 
-			rectCordinate.topLeft().y() + 1, 
-			rectCordinate.width() - Step - 1, 
-			rectCordinate.height()+30);
-	
-	QRectF source(
-                        rectCordinate.topLeft().x() + Step,
-                        rectCordinate.topLeft().y() + 1, 
-                        rectCordinate.width() - Step - 1, 
-                        rectCordinate.height()+30);
+void Screen::drawCurve()
+{  
+	QPainter painterSave;
+	painterSave.begin(&savePixmap);
+        painterSave.drawPixmap(0,0,newPixmap);
+	painterSave.end();
+        
+	QPainter painterMid;
+	painterMid.begin(&midPixmap);
+        painterMid.drawPixmap(toNewRect.left(),toNewRect.top(),savePixmap,
+		fromSaveRect.left(),fromSaveRect.top(),fromSaveRect.width(), fromSaveRect.height());
+	painterMid.end();
 
-  	painter.drawPixmap(target,m_pixmap, source);
-/**here I am doing sth stupid**/
+	QPainter painter;
+        painter.begin(&newPixmap);
+        painter.drawPixmap(rectCordinate.left()+1,rectCordinate.top()+1,midPixmap,rectCordinate.left()+1, 
+		rectCordinate.top()+1, rectCordinate.width()-2, fromSaveRect.height());
 
-        QRectF target2(
-                        rectCordinate.topRight().x()-Step+1,
-                        rectCordinate.topLeft().y() + 1,
-                        Step-1,
-                        rectCordinate.height()+30);
+	int Xnew, Xold;
+	QVector<double>::iterator Yit = Yval.end();
 
-        QRectF source2(
-                        rectCordinate.topRight().x()+2,
-                        rectCordinate.topLeft().y() + 1,
-                        Step,
-                        rectCordinate.height()+30);
-//here we need to make the leftmost strip white
-	painter.drawPixmap(target2, m_pixmap, source2);
-
-/**   end   **/
-
-
-
-        int Xnew, Xold;
-        Ynew = rectCordinate.bottomRight().y() - Ynew - 1;
-        Xnew = rectCordinate.bottomRight().x() -1;
-	//"-1" to avoid the X-axis
-        Yold = rectCordinate.bottomRight().y() - Yold- 1;
-	//"-1" to avoid the Y-axis
-        Xold = rectCordinate.bottomRight().x() - Step;
+        Ynew = rectCordinate.bottom() - *(--Yit) - 1;
+        Xnew = rectCordinate.right() -1;
+        Xold = rectCordinate.right() - Step;
 
         painter.setPen( Qt::blue );
-        painter.drawLine( toNewRect.bottomRight().x(), rectCordinate.bottomRight().y(),
-			  rectCordinate.bottomRight().x(), rectCordinate.bottomRight().y() );                
-	painter.drawLine( toNewRect.bottomRight().x(), rectCordinate.bottomRight().y(),
-			  toNewRect.bottomRight().x(), rectCordinate.bottomRight().y() + BaseLineLenght );
+        painter.drawLine( toNewRect.right(), rectCordinate.bottom(),
+			  rectCordinate.right(), rectCordinate.bottom());                
+	painter.drawLine( toNewRect.right(), rectCordinate.bottom(),
+			  toNewRect.right(), rectCordinate.bottom() + BaseLineLenght );
+
+       // draw the dotline in the horizontal direction 
+        int y0 = rectCordinate.bottom();
+
+        static bool drawDotLine = FALSE;
+
+        if ( drawDotLine )
+        {
+                for (int j =0; j < (numYTicks /5 -1 ); j++)
+                {
+		    y0 -= 5*Step;
+                     painter.setPen( QPen( Qt::blue, 1, Qt::DotLine) );
+                     painter.drawLine( toNewRect.right() , y0, 
+                             rectCordinate.right(), y0 );
+                }
+        }
         
-        /*draw the dotline in the horizontal direction*/
-        int y0 = rectCordinate.bottomRight().y();
+        drawDotLine = !drawDotLine;
 
-        static bool drawDotLine = false;
+        //draw the calibration values of x-axis
+        static int numX = 0;
+	if(numX==0)
+	Yold= rectCordinate.bottom()-5*Step;
 
-        painter.save();
-	if ( drawDotLine )
-	{
-		for (int j =0; j < (numYTicks /5 -1 ); j++)
-		{
-			y0 -= 5*Step;
-			painter.setPen( QPen( Qt::blue, 1, Qt::DotLine) );
-			painter.drawLine( toNewRect.bottomRight().x() , y0, 
-			rectCordinate.bottomRight().x(), y0 );
-			//draw the X-axis dotline, it works perfectly
-		}
-	}
-	painter.restore();
-	drawDotLine = !drawDotLine;
-
-        /*draw the calibration values of x-axis*/
-	static int numX = 0;
-	if ( 0 == numX % (2*Step) )
-	{//since Step==5, so this block will be executed once every 10 times updateCurve() is called
+      /*static int sec=0; min=0; hour=0;*/
+        if (  numX % (2*Step)==0)
+        {
                
-		int low = hour % 10;
-		int high = hour / 10;
-		QString timeString;        
-		timeString += ( QString( "%1%2:").arg(high).arg(low) );
-		low = min % 10;
-		high = min / 10;
-		timeString += ( QString( "%1%2:").arg(high).arg(low) );
-		low = sec % 10;
-		high = sec / 10;
-		timeString += ( QString( "%1%2").arg(high).arg(low) );                
+            int low = hour % 10;
+            int high = hour / 10;
+            QString timeString;        
+            timeString += ( QString( "%1%2:").arg(high).arg(low) );
+            low = min % 10;
+            high = min / 10;
+            timeString += ( QString( "%1%2:").arg(high).arg(low) );
+            low = sec % 10;
+            high = sec / 10;
+            timeString += ( QString( "%1%2").arg(high).arg(low) );                
+	   
+            //draw the long calibration 
+            painter.drawLine( 
+                    toNewRect.right(), 
+                    rectCordinate.bottom() + BaseLineLenght,
+                    toNewRect.right(), 
+                    rectCordinate.bottom() + 2 * BaseLineLenght );
 
-		/*draw the long calibration---the little line right above the time string */
-		painter.drawLine( 
-				toNewRect.bottomRight().x(), 
-				rectCordinate.bottomRight().y() + BaseLineLenght,
-				toNewRect.bottomRight().x(), 
-				rectCordinate.bottomRight().y() + 2 * BaseLineLenght );
-
-		/*draw the dotline in the vertical direction*/
-		painter.save();
-		painter.setPen( QPen( Qt::yellow, 1, Qt::DotLine) );
-		cout<<"draw the dotline in the vertical direction"<<endl;
-		painter.drawLine( 
-				toNewRect.bottomRight().x(), 
-				rectCordinate.bottomRight().y(), 
-				toNewRect.topRight().x(),
-				rectCordinate.topRight().y() );
-		painter.restore();
-
-		/*draw the calibration values of x-axis*/
-		if ( 0 == numX % (4*Step) )
-		{//since Step==5, so this block will be executed once every 20 times updateCurve() is called
-			painter.drawLine( 
-				toNewRect.bottomRight().x(), 
-				rectCordinate.bottomRight().y() + 2*BaseLineLenght,
-				toNewRect.bottomRight().x(), 
-				rectCordinate.bottomRight().y() + 3 * Step );
+            //draw the dotline in the vertical direction
+            
+            painter.setPen( QPen( Qt::blue, 1, Qt::DotLine) );
+            painter.drawLine( 
+                    toNewRect.right(), 
+                    rectCordinate.bottom(), 
+                    toNewRect.right(),
+                    rectCordinate.top() );
                 
-			painter.setPen( Qt::green );
-			//display time in green
+            //draw the calibration values of x-axis
+            if (  numX % (4*Step)==0)
+            {
+		painter.drawLine( 
+		    toNewRect.right(), 
+		    rectCordinate.bottom() + 2*BaseLineLenght,
+		    toNewRect.right(), 
+		    rectCordinate.bottom() + 3 * Step );
+                
+		painter.setPen( Qt::blue );
        
-			QRect rectCValue(
-				toNewRect.bottomRight().x() - 10 * Step,
-				toNewRect.bottomRight().y() - BaseFontHeight+2,
-				10 * Step, 
-				BaseFontHeight );
-			painter.drawText( 
-				rectCValue.topLeft().x(), 
-				rectCValue.topLeft().y(), 
-				rectCValue.width(), 
-				rectCValue.height(),
-				Qt::AlignHCenter, 
-				timeString );
-		}
+		QRect rectCValue(
+		    toNewRect.right() - 9 * Step,
+		    toNewRect.bottom() -2* BaseFontHeight,
+		    10 * Step, 
+		    BaseFontHeight+2);
 
-            sec += 10;
-            if ( 60 == sec )
+		painter.drawText( 
+		    rectCValue.left(), 
+		    rectCValue.top(), 
+		    rectCValue.width(), 
+		    rectCValue.height(),
+		    Qt::AlignLeft, 
+		    timeString );
+            }
+	  
+          sec += 10;  
+            if ( sec==60 )
             {
                 sec = 0;
                 min += 1;
-                if ( 60 == min )
+                if ( min == 60 )
                 {
                     min = 0;
                     hour += 1;
-                    if ( 60 == hour )
+                    if ( hour == 60 )
                         hour = 0;
                 }
-            }
-                
-
-        }
-        numX ++;
-        if ( numX >= 100 )
-                numX = 0;
-
-	cout<<"rectCordinate.bottomRight().y()"<<rectCordinate.bottomRight().y()<<endl;
-	cout<<"rectCordinate.topRight().y()"<<rectCordinate.topRight().y()<<endl;
-	cout<<"Ynew:"<<Ynew<<endl;
-
+            }         
+     }
+      
+	  numX ++;
+       
+     if ( numX >= 100 )
+             numX = 0;
+     
         painter.setPen( Qt::red );
+        painter.drawLine( Xold, (int)Yold, Xnew, (int)Ynew );
 
-	cout<<"Xold----"<<Xold<<endl;
-	cout<<"Yold----"<<Yold<<endl;
-	cout<<"Xnew----"<<Xnew<<endl;
-	cout<<"Ynew----"<<Ynew<<endl;
-
-	painter.drawLine( Xold, (int)Yold, Xnew, (int)Ynew );
-	Yold = rectCordinate.bottomRight().y() - Ynew - 1;
-	//this line is used to update Yold with the used Ynew 
+        Yold = Ynew; 
+	painter.end();
+	   
 }
 
 

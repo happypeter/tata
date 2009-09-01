@@ -1,19 +1,18 @@
-#ifndef SCREEN_HPP
-#define SCREEN_HPP
+#ifndef SCREEN_CPP
+#define SCREEN_CPP
 
 #include <QWidget>
 #include <QFrame>
 #include <QPixmap> 
 #include <QPainter>
+#include <QRect>
+#include <QString>
 
 #define FrameWidth          3 
 #define Step                5  
-#define BaseFontHeight      20 
-#define BaseLineLenght      5  
+#define BaseFontHeight      10
+#define BaseLineLenght      5
 #define SpaceMargin         5
-
-class QRect;
-class QString;
 
 class Screen : public QFrame
 {
@@ -21,37 +20,34 @@ class Screen : public QFrame
     
 public:
     Screen( QWidget *parent = 0 );
-    Screen( const Screen& );
-
+   
     void animate( double y );
     void set_animate( bool b );
     void setXTitle( QString str );
     void setYTitle( QString str );
-    double Yold, Ynew;
-    
+    void drawCurve();    
+    void refreshPixmap();	   
 protected:
-    void initNumber( void );
-    void initCordinate( );
-    void updateCurve( );
+    void initNumber(QPainter &painter);
+    void drawCordinate(QPainter &painter);
 //    virtual void showEvent ( QShowEvent * );
 //    virtual void hideEvent ( QHideEvent * );
-    virtual void paintEvent( QPaintEvent * );
-    virtual void resizeEvent( QResizeEvent * );
-    QSize minimumSize () const;
+     void paintEvent( QPaintEvent * );
+     void resizeEvent( QResizeEvent * );
+     QSize minimumSizeHint() const;
 	
-public:  
-    double newY, oldY;
+private:  
+    double Yold, Ynew;
     int numXTicks, numYTicks;
     bool firstShow, m_animate;
+    QPixmap newPixmap,savePixmap,midPixmap;
     int sec, min, hour;
-    QPixmap m_pixmap;
     QRect rectCordinate;
     QRect fromSaveRect;
     QRect toNewRect;
-    QRect rectYText;
     QRect rectXText;
-    
-    // We use this painter to draw evering on the newbuffer
+    QRect rectYText;
+    QVector<double> Yval;
     QPainter painter;
     QString stringYTitle;
     QString stringXTitle;

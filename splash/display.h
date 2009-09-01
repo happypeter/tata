@@ -1,8 +1,8 @@
-#ifndef DISPLAY_HPP
-#define DISPLAY_HPP
+#ifndef DISPLAY_CPP
+#define DISPLAY_CPP
 
 #include <QWidget>
-#include "screen.hpp"
+#include "screen.h"
 
 class QTimer;
 class Screen;
@@ -19,8 +19,8 @@ public:
     DisplayWidget();
     QSize sizeHint() const;
     void   run();
-    void   peter_fullscreenshow();
-    void   peter_setbackgroundpixmap();
+//    void   peter_fullscreenshow();
+  //  void   peter_setbackgroundpixmap();
     double readCurveData();
     void   readFile();
       

@@ -6,8 +6,8 @@
 #include <QVBoxLayout>
 #include <iostream>
 #include <stdlib.h>
-#include "splash/screen.hpp"
-#include "splash/display.hpp"
+#include "splash/screen.h"
+#include "splash/display.h"
 #include "popup.hpp"
 
 #include <QLCDNumber>

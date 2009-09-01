@@ -10,7 +10,7 @@
 #include <QPainter>
 #include <iostream>
 
-#include "display.hpp"
+#include "display.h"
 
 using namespace std;
                                                                                 
@@ -37,12 +37,11 @@ DisplayWidget::DisplayWidget()
 	layout->addWidget( stopButton , 0, 2 );
 
 	setLayout(layout);
-
-	peter_fullscreenshow();  // --> QWidget::showFullScreen();
-
 	connect( startButton, SIGNAL( clicked () ), SLOT( start() ) );
 	connect( stopButton, SIGNAL( clicked () ), SLOT( stop() ) );
-
+	QString str;
+	str="Y value";
+	screen1->setYTitle(str);
 	time = 0;
 	yval = 0.0;
 //	setBackgroundColor(blue);
@@ -59,11 +58,11 @@ void DisplayWidget::run()
 void DisplayWidget::tick()
 {       
 	yval = readCurveData();
+//	cout<<"yval--------"<<yval<<endl;
+	 screen1->animate(yval);
+	lineEdit->setText( QString::number( yval ) );      
 
-	lineEdit->setText( QString::number( yval ) );
-	screen1->animate(yval);
-	screen1->update();
-//every time update() is called, paintEvent() will be executed, right?
+	screen1->refreshPixmap();
 }
 
 void DisplayWidget::stop()
@@ -84,11 +83,6 @@ QSize DisplayWidget::sizeHint() const
 	return QSize( 16 * Margin, 12 * Margin );
 }
 
-void DisplayWidget::peter_fullscreenshow()
-{
-	//showFullScreen();
-}
-
 void DisplayWidget::readFile()
 {
         QFile file("in.txt");
@@ -107,14 +101,15 @@ double DisplayWidget::readCurveData()
         
       tempStr =(QString) *it;
       tempDate = tempStr.toDouble();
-       if (it != strlist.end())
+       if (it != strlist.end()-1)
         {        
                 ++it;
-        }
+            }
 
         else
         {
                 it = strlist.begin();
-        }
+
+           }
                 return tempDate;
 }
