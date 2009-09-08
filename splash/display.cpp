@@ -83,7 +83,7 @@ QSize DisplayWidget::sizeHint() const
 	return QSize( 16 * Margin, 12 * Margin );
 }
 
-void DisplayWidget::readFile()
+void DisplayWidget::readFile()//I can use this for axtu, haha
 {
         QFile file("in.txt");
         file.open( QIODevice::ReadOnly );
@@ -96,20 +96,17 @@ void DisplayWidget::readFile()
 
 double DisplayWidget::readCurveData()
 {
-        QString tempStr;
-        double tempDate;
-        
-      tempStr =(QString) *it;
-      tempDate = tempStr.toDouble();
-       if (it != strlist.end()-1)
-        {        
-                ++it;
-            }
-
-        else
-        {
-                it = strlist.begin();
-
-           }
-                return tempDate;
+	QString tempStr;
+	double tempDate;
+        tempStr =(QString) *it;
+	tempDate = tempStr.toDouble();
+	if (it != strlist.end()-1)//if "-1" is not here, there will be segfault when read reach the end of in.txt
+	{        
+		++it;
+	}
+	else
+	{
+		it = strlist.begin();
+	}
+		return tempDate;
 }
