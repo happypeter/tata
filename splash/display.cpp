@@ -17,8 +17,7 @@ using namespace std;
 QStringList strlist;
 QStringList ::Iterator it;
 
-DisplayWidget::DisplayWidget()
-    :  QWidget()
+DisplayWidget::DisplayWidget() :  QWidget()
 {
 	QGridLayout *layout = new QGridLayout;
 
@@ -58,10 +57,8 @@ void DisplayWidget::run()
 void DisplayWidget::tick()
 {       
 	yval = readCurveData();
-//	cout<<"yval--------"<<yval<<endl;
-	 screen1->animate(yval);
+	screen1->animate(yval);
 	lineEdit->setText( QString::number( yval ) );      
-
 	screen1->refreshPixmap();
 }
 
