@@ -164,7 +164,7 @@ void Screen::drawCordinate(QPainter &painter)
 				if(j==numYTicks)
 				{
 					painter.drawLine( x0 , rectCordinate.top(),
-				 rectCordinate.right(), rectCordinate.top() );}
+				 		rectCordinate.right(), rectCordinate.top() );}
                        else{
 			painter.setPen( QPen( Qt::blue, 1, Qt::DotLine) );
                         painter.drawLine( x0 , y0, rectCordinate.right(), y0 ); }
@@ -185,7 +185,7 @@ void Screen::drawCordinate(QPainter &painter)
 	painter.save();	
 	QRect tempYText( 
                 rectYText.left(), rectYText.top(),
-                rectYText.height(), rectYText.height() );
+                	rectYText.height(), rectYText.height() );
         painter.setViewport( tempYText );
         QRect rectYViewport = painter.viewport();
         painter.setWindow( -(int)rectYViewport.width()/2, -(int)rectYViewport.height()/2,
