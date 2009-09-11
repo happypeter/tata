@@ -23,7 +23,6 @@ Frame::Frame(QWidget* parent, const char* name)
 	connect ( button3, SIGNAL( clicked() ), SLOT( button3Clicked() ) );
 
 	QHBoxLayout * l = new QHBoxLayout( this );
-//	m_processFileReader = new QProcess();
 
         button1->setText(tr("Start"));
 	button2->setText(tr("FileReader"));
@@ -57,36 +56,21 @@ Frame::Frame(QWidget* parent, const char* name)
 
 	resize(640,480);
 
-//	QPixmap pix(desktop_xpm);
-//	setBackgroundPixmap(pix);
-//	display = new DisplayWidget;
 }
 Frame::~Frame()
 {
-/*	if(m_processFileReader)
-	{
-		delete m_processFileReader;
-	}
-*/
 }
 void Frame::button1Clicked()
 {
 	display=new DisplayWidget;
 	display->show();
-//	display->peter_fullscreenshow();
 }
                                                                                 
 void Frame::button2Clicked()
-{	
-/*	m_processFileReader = new QProcess();
-	QString program = "/bin/peter";
-	QStringList arguments;
-	arguments << "-l";
-	m_processFileReader->start(program, arguments);
-*/
-	cout<<"peter created..."<<endl;
+{
 	QProcess peter;
-	peter.start("xxxxxx", QStringList() << "-l");
+	cout<<"peter created..."<<endl;
+	peter.start("gedit", QStringList() << "");
 	if (!peter.waitForStarted())
 	{
 		cout<<"Programme not found..."<<endl;
