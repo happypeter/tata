@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "splash/screen.h"
 #include "splash/display.h"
-#include "popup.hpp"
+#include "popup.h"
 
 #include <QLCDNumber>
 #include <QSlider>

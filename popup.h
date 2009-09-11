@@ -1,5 +1,5 @@
-#ifndef POPUP_HPP
-#define POPUP_HPP
+#ifndef POPUP_H
+#define POPUP_H
 
 #include <QLabel>
 #include <QPushButton>
@@ -9,14 +9,15 @@
 
 class Frame : public QFrame
 {
-    Q_OBJECT
+	Q_OBJECT
 
 public:
-    Frame( QWidget *parent=0, const char*  name=0);
+	Frame( QWidget *parent=0, const char*  name=0);
 
 private slots:
-    void button1Clicked();
-    void button3Clicked();
+	void button1Clicked();
+	void button2Clicked();
+	void button3Clicked();
      
 private:
     QPushButton *button1;
@@ -25,4 +26,4 @@ private:
     DisplayWidget *display;       
 };
 
-#endif // POPUP_HPP
+#endif // POPUP_H

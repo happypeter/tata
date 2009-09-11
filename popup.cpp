@@ -6,7 +6,7 @@
 #include <QPalette>
 #include <iostream>
 
-#include "popup.hpp"
+#include "popup.h"
 
 using namespace std;
 
@@ -18,12 +18,13 @@ Frame::Frame(QWidget* parent, const char* name)
 	button3 = new QPushButton;
 
 	connect ( button1, SIGNAL( clicked() ), SLOT( button1Clicked() ) );
+	connect ( button2, SIGNAL( clicked() ), SLOT( button2Clicked() ) );
 	connect ( button3, SIGNAL( clicked() ), SLOT( button3Clicked() ) );
 
 	QHBoxLayout * l = new QHBoxLayout( this );
 
         button1->setText(tr("Start"));
-	button2->setText(tr("Stop"));
+	button2->setText(tr("FileReader"));
 	button3->setText(tr("Close"));
 	button1->setFlat(TRUE);
 	button2->setFlat(TRUE);
@@ -71,5 +72,9 @@ void Frame::button3Clicked()
     close();
 }
                                                                                 
+void Frame::button2Clicked()
+{
+    close();
+}
 
 
