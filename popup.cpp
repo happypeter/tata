@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QDesktopWidget>
+#include <QMessageBox>
 #include <QHBoxLayout>
 #include <QIcon>
 #include <QPixmap>
@@ -11,7 +12,7 @@
 using namespace std;
 
 Frame::Frame(QWidget* parent, const char* name)
-    :  QFrame(parent, Qt::FramelessWindowHint )
+	:  QFrame(parent, Qt::FramelessWindowHint)
 {
 	button1 = new QPushButton;
 	button2 = new QPushButton;
@@ -22,6 +23,7 @@ Frame::Frame(QWidget* parent, const char* name)
 	connect ( button3, SIGNAL( clicked() ), SLOT( button3Clicked() ) );
 
 	QHBoxLayout * l = new QHBoxLayout( this );
+	m_processFileReader = new QProcess(this);
 
         button1->setText(tr("Start"));
 	button2->setText(tr("FileReader"));
@@ -59,7 +61,13 @@ Frame::Frame(QWidget* parent, const char* name)
 //	setBackgroundPixmap(pix);
 //	display = new DisplayWidget;
 }
-
+Frame::~Frame()
+{
+	if(m_processFileReader)
+	{
+		delete m_processFileReader;
+	}
+}
 void Frame::button1Clicked()
 {
 	display=new DisplayWidget;
@@ -69,7 +77,11 @@ void Frame::button1Clicked()
                                                                                 
 void Frame::button2Clicked()
 {
-	close();
+	QString program = "/bin/ls";
+	QStringList arguments;
+	arguments << "-l";
+	m_processFileReader->start(program, arguments);
+
 }
                                                                                 
 void Frame::button3Clicked()
