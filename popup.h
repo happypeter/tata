@@ -20,10 +20,10 @@ private slots:
 	void button3Clicked();
      
 private:
-    QPushButton *button1;
-    QPushButton *button2;
-    QPushButton *button3;
-    DisplayWidget *display;       
+	QPushButton *button1;
+	QPushButton *button2;
+	QPushButton *button3;
+	DisplayWidget *display;       
 };
 
 #endif // POPUP_H

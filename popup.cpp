@@ -41,8 +41,8 @@ Frame::Frame(QWidget* parent, const char* name)
 	l->addWidget(button3);
 
 	button1->resize(50,50);
-        button2->resize(50,50);
-        button2->resize(50,50);
+	button2->resize(50,50);
+	button2->resize(50,50);
 
 	setPalette( palette );
 
@@ -67,14 +67,14 @@ void Frame::button1Clicked()
 //	display->peter_fullscreenshow();
 }
                                                                                 
-void Frame::button3Clicked()
-{
-    close();
-}
-                                                                                
 void Frame::button2Clicked()
 {
-    close();
+	close();
+}
+                                                                                
+void Frame::button3Clicked()
+{
+	close();
 }
 
 
