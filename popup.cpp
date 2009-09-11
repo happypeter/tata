@@ -23,7 +23,7 @@ Frame::Frame(QWidget* parent, const char* name)
 	connect ( button3, SIGNAL( clicked() ), SLOT( button3Clicked() ) );
 
 	QHBoxLayout * l = new QHBoxLayout( this );
-	m_processFileReader = new QProcess(this);
+//	m_processFileReader = new QProcess();
 
         button1->setText(tr("Start"));
 	button2->setText(tr("FileReader"));
@@ -63,10 +63,11 @@ Frame::Frame(QWidget* parent, const char* name)
 }
 Frame::~Frame()
 {
-	if(m_processFileReader)
+/*	if(m_processFileReader)
 	{
 		delete m_processFileReader;
 	}
+*/
 }
 void Frame::button1Clicked()
 {
@@ -76,12 +77,28 @@ void Frame::button1Clicked()
 }
                                                                                 
 void Frame::button2Clicked()
-{
-	QString program = "/bin/ls";
+{	
+/*	m_processFileReader = new QProcess();
+	QString program = "/bin/peter";
 	QStringList arguments;
 	arguments << "-l";
 	m_processFileReader->start(program, arguments);
+*/
+	cout<<"peter created..."<<endl;
+	QProcess peter;
+	peter.start("xxxxxx", QStringList() << "-l");
+	if (!peter.waitForStarted())
+	{
+		cout<<"Programme not found..."<<endl;
+		return false;
+	}
 
+	peter.write("Qt rocks!");
+	peter.closeWriteChannel();
+
+	if (!peter.waitForFinished())
+	return false;
+	QByteArray result = peter.readAll();
 }
                                                                                 
 void Frame::button3Clicked()

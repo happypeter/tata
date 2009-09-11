@@ -25,7 +25,6 @@ private:
 	QPushButton *button2;
 	QPushButton *button3;
 	DisplayWidget *display;   
-	QProcess * m_processFileReader;    
 };
 
 #endif // POPUP_H
