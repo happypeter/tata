@@ -19,7 +19,7 @@ AC_HEADER_STDC
 AC_HEADER_STDBOOL
 AC_C_CONST
 
-#the following code is the idea of axtu/configure.ac
+#the following code is form the idea of axtu/configure.ac
 qmake -project
 qmake
 AC_OUTPUT
