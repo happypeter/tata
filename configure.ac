@@ -20,6 +20,6 @@ AC_HEADER_STDBOOL
 AC_C_CONST
 
 #the following code is the idea of axtu/configure.ac
-qmake
 qmake -project
+qmake
 AC_OUTPUT
