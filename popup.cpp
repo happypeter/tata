@@ -74,14 +74,13 @@ void Frame::button2Clicked()
 	if (!peter.waitForStarted())
 	{
 		cout<<"Programme not found..."<<endl;
-		return false;
 	}
 
 	peter.write("Qt rocks!");
 	peter.closeWriteChannel();
 
 	if (!peter.waitForFinished())
-	return false;
+	;//do nothing
 	QByteArray result = peter.readAll();
 }
                                                                                 
