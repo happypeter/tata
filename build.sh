@@ -1,7 +1,5 @@
+#!/bin/bash
 make clean
 qmake -project
-qmake
+qmake 
 make
-make clean
-./tata
-
