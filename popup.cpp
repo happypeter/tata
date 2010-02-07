@@ -62,7 +62,7 @@ Frame::~Frame()
 }
 void Frame::button1Clicked()
 {
-	display=new DisplayWidget;
+	display = new DisplayWidget;
 	display->show();
 }
                                                                                 
