@@ -2,5 +2,6 @@ I want to port all the svn history to git repo
 	sudo apt-get install git-svn
 	#do not try to see git-svn in PATH, it is called by "git svn"
 	git svn clone -s -r 40000 https://tinylion.svn.sourceforge.net/svnroot/tinylion
+	git svn fetch 
 
 it works
