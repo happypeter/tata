@@ -5,3 +5,18 @@ I want to port all the svn history to git repo
 	git svn fetch 
 
 it works
+
+Now I want to merge tata and tinylion
+
+peter@cow:~/x-github/tata$  git remote add tinylion ../tinylion/
+peter@cow:~/x-github/tata$ git fetch tinylion
+warning: no common commits
+remote: Counting objects: 89, done.
+remote: Compressing objects: 100% (83/83), done.
+remote: Total 89 (delta 25), reused 0 (delta 0)
+Unpacking objects: 100% (89/89), done.
+From ../tinylion
+ * [new branch]      master     -> tinylion/master
+peter@cow:~/x-github/tata$ git merge tinylion/master
+
+but the output is not very good.
