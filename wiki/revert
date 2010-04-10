@@ -1,0 +1,11 @@
+last commit we do a revert
+
+	 git revert -m 1 HEAD^
+
+in order to remove all files merged in with commit
+
+	 Merge commit 'tinylion/master'
+
+we do so, becasue we want all the history to hornor the contribution to tata svn repo, but since all the files are already out of date, so we do a revert to clean everything merged in.
+
+Now we can continue our development.	
