@@ -1,5 +1,13 @@
+## all the tmp file
+*.swp
 Makefile
 moc_*
 tata
 tata.pro*
 *.o
+## autoconf tmp file
+config.log
+config.status
+configure
+autom4te.cache/
+
