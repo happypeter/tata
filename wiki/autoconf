@@ -1,0 +1,8 @@
+the autoconf system works for me now:
+
+	autoconf
+	./configure
+	make
+
+of course, it does not make any sense to use autoconf this way
+just good study
