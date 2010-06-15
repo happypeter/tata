@@ -1,0 +1,55 @@
+see /doc/debug_ad_1
+
+haha, with the help of code/forefather and 2410UM
+
+i think now i see how AD wroks
+
+now let's go all the way back to ad_v2
+
+***************
+ad_v2a+ad_app_v2
+
+we are getting closer to the truth!
+
+see doc/ad_v2a message
+
+the interesting thing is seen when you pay attention to the
+
+6th printf number:
+
+if you connect chanel0 to Vref
+
+then it is always 1023
+
+otherwise, it varies everytime you issue ./ad2
+
+but then all the output is under 1000
+
+haha, my ad works!
+
+**************
+ad_v2b
+
+this time i will impletement write(), and see if the bug will go away
+
+in 2410UM
+    
+   Normal Conversion Mode (AUTO_PST = 0, XY_PST = 0)
+
+so this time i will first add a printk to see whether the two bits
+
+are changed by ts driver?
+
+ANSWER: i see 'before everything, ADCTSC=0x1d3'
+
+this is just the exact value of WAIT4INT(1) in 2410_ts.c!!!
+
+now i understand why in one of my downloaded drivers, 
+
+the author wrote: exclusive with s3c2410-ts.c
+**
+then i will write 0 to TSC to see if the adc works alright this time
+
+No!
+***************************
+see debug_ad_3

@@ -1,0 +1,35 @@
+watchdog con adress analysis
+
+/* linux/include/asm/arch-s3c2410/regs-watchdog.h
+
+#define S3C2410_WDOGREG(x) ((x) + S3C24XX_VA_WATCHDOG)
+#define S3C2410_WTCON	   S3C2410_WDOGREG(0x00)
+
+
+/* linux/include/asm-arm/arch-s3c2410/map.h
+
+#define S3C2410_ADDR(x)	  (0xF0000000 + (x))
+#define S3C24XX_VA_WATCHDOG S3C2410_ADDR(0x00B00000)
+
+
+//so finally we know 
+
+//S3C2410_WDCON=0xF0B00000
+
+//in 2410UM P435, we see the physical address of WTCON is 0x53000000
+
+//does 0xF0B00000=ioremap(0x53000000)????
+
+//but i am sure 0xF0B00000 is virtual adress, because S3C24XX_VA_WATCHDOG
+
+//simplely means Virtual Adress of WATCHDOG(PA means phsical adress)
+
+but again, does 0xF0B00000=ioremap(0x53000000)?
+
+no, it does not! because the return value of ioremap is a pointer.
+
+both the two method is ok to lighten my led now. 
+
+see /code/led_readb to know more
+
+for the sake of being portable, ioremap is a better choice

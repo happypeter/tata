@@ -1,0 +1,89 @@
+adc config
+
+ADCCON first(in UM P415)
+
+ECFLG [15]:     0       //0 means in converson process
+
+PRSCEN [14]:    1
+
+PRSCVL [13:6]:  00111101    //decimal 66
+
+SEL_MUX [5:3]:   0       //chanel 0 (one my board the right most one)
+
+STDBM [2]:       0       //Nomal operation mode
+
+READ_START[1]:   0        //disabed in order to nake ENABLE_START valid
+
+ENABLE_START[0]:  1       //check afer the startup, see if it is cleared
+
+****************************************************
+//so finally the value to write into ADCCON is 0x4f41
+****************************************************
+
+in regs-adc.h
+#define S3C2410_ADCCON_PRSCEN		(1<<14)
+#define S3C2410_ADCCON_PRSCVL(x)	(((x)&0xFF)<<6)
+#define S3C2410_ADCCON_PRSCVLMASK	(0xFF<<6)
+#define S3C2410_ADCCON_SELMUX(x)	(((x)&0x7)<<3)
+#define S3C2410_ADCCON_MUXMASK		(0x7<<3)
+
+and see 2410_ts.c to know how to use them
+
+e.g
+
+if we want to achieve the same effect as writing 0x4f41 to ADCCON
+
+we can write:
+
+writel(S3C2410_ADCCON_PRSCEN | S3C2410_ADCCON_PRSCVL(0x3d)\
+       S3C2410_ADCCON_SELMUX(0)\         ----------------------chanel 0
+       S3C2410_ADCCON_ENABLE_START,\
+			     base_addr+S3C2410_ADCCON);
+
+********************
+ADCTSC  //i will write 0 to it
+
+******************************
+//what to do finally
+*******************************
+
+in UM
+
+1. Normal Conversion Mode
+
+Normal Conversion Mode (AUTO_PST = 0, XY_PST = 0)
+
+is generally used for General Purpose ADC Conversion.
+
+//even though the initial value of the two bits are 0, 0. 
+//but they are may changed in ts driver, see ts.c to know more
+
+This mode can be initialized by setting the ADCCON and ADCTSC 
+
+and completed with a read the XPDATA
+
+(Normal ADC) value of ADCDAT0 (ADC Data Register 0).
+
+Programming Notes
+
+1. The A/D converted data can be accessed by means of interrupt or polling method.
+
+With interrupt method, the overall conversion time 
+
+- from A/D converter start to converted data read 
+
+- may be delayed because of the return time of interrupt service routine 
+
+and data access time. 
+
+With polling method, by checking the
+
+ADCCON[15] - end of conversion flag-bit, 
+
+the read time from ADCDAT register can be determined.
+
+2. A/D conversion can be activated in different way:
+
+After ADCCON[1] - A/D conversion start-by-read mode-is set to 1,
+
+A/D conversion starts simultaneously whenever converted data is read

@@ -1,0 +1,75 @@
+ioremap issue
+
+the author of the adc driver i am debugging now said 
+
+he encountered a error, when the user app is actived:
+
+   ad convert opened!
+   Please select which chanel to read....
+   0 : chanel--0
+   1 : chanel--1
+   o
+   write number=8, adcdev.prescale=40, adcdev.chanel=0
+   Unable to handle kernel NULL pointer dereference at virtual address 00000004
+   pgd = c3e5c000
+   [00000004] *pgd=33eca031, *pte=00000000, *ppte=00000000
+
+among all the possibilities, i strrongly believe it is due to the 
+
+absence of ioremap to ADCGON and ADCDATA
+
+am i right?
+
+********
+
+see my artical 
+
+ioremap analysis
+
+and we know the argument of ioremap is physical adress
+
+but i was wrong, things like ADCGON are virtul adress defined by kernel
+
+so no ioremap to them is needed
+***********
+
+now i tend to believe the defination in regs-adc.h is buggy
+
+because i see in
+
+/* linux/include/asm-arm/arch-s3c2410/map.h
+ 
+   /* we have a bit of a tight squeeze to fit all our registers from
+
+    * 0xF00000000 upwards, since we use all of the nGCS space in some
+    * capacity, and also need to fit the S3C2410 registers in as well...
+  
+
+but here the virtual address is 00000004
+
+ok, it's time to sleep, see you tomorrow!
+
+**************
+see YC kernel source s3c2410_ts.c
+
+and everything is clear
+
+the secret lies in
+
+    static void __iomem *base_addr;
+
+**
+
+thus we know we do not have to chnge the vitual adress difination in 
+
+regs-adc.h 
+
+although it is quite different from others like watchdog registers
+
+**
+
+so i will first use 'iomem' to fix the bug in ad driver
+
+and maybe i can aslo change the defination in regs-adc.h
+
+know HOW in doc/S3C2410_WDCON adress analysis

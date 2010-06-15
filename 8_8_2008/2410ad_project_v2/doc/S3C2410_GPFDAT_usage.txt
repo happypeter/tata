@@ -1,0 +1,27 @@
+S3C2410_GPFDAT_usage
+
+first of all, never forget it is a mumber itself, so
+
+S3C2410_GPFDAT=0x123;
+
+is definitely wrong.
+
+state = S3C2410_GPFDAT;
+
+is obviously a misuse as well.
+
+state=__raw_readl(S3C2410_GPFDAT);
+
+is right as they see.
+
+*****************
+//__raw_readl() usage
+******************
+
+people say it is uesd to read out the four byte date with the adress given as the argument
+
+its defination in io.h is different for me, so i will learn it by testing it
+
+
+
+_raw_writel((_raw_readl(S3C2410_GPFCON)&(~(3<<8)))|(1<<8),S3C2410_GPFCON)

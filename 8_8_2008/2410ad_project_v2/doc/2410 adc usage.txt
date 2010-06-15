@@ -1,0 +1,73 @@
+2410 adc usage
+
+AVref is N12 on 2410 function as
+
+adc Vref
+
+in the UM we see
+
+  FUNCTION DESCRIPTIONS
+  A/D Conversion Time
+  When the PCLK frequency is 50 MHz and the prescaler value is 49, total 10-bit conversion time is given:
+  A/D converter freq. = 50 MHz/(49+1) = 1 MHz
+  Conversion time = 1/(1 MHz / 5cycles) = 1/200 kHz = 5 us
+  This A/D converter is designed to operate at maximum 2.5 MHz clock, so the conversion rate can go up to
+  500 KSPS.
+
+know more in P414
+
+now we know how to set some bits of ADCCON
+
+***
+now where is the output digital value of ADC
+
+in the UM we see:
+
+   XPDATA
+   (Normal ADC)
+   [9:0] X-position conversion data value. (include Normal ADC conversion data
+   value)
+   Data value: 0 ~ 3FF
+
+so we know our value is on port ADCDAT0
+
+there is one problem left:
+
+since the ts and other adc chanels all output onto this port
+
+how can we know who is who ?
+
+maybe that is why the sample drivers i get from net 
+
+have sth to do with ADCTSC
+
+see
+   AUTO_PST [2] Automatically sequencing conversion of X-position and Y-position
+   0 = Normal ADC conversion
+   1 = Auto (Sequential) X/Y Position Conversion Mode
+
+and we know maybe a simple
+
+ADCTSC=0
+
+will do
+
+*******
+ 
+the vref on my board is equals my VDD33=3.25v
+
+***************
+in UM they say:
+   NOTES:
+    1. Before ADC conversion, Touch screen uses X-tal clock 
+       or EXTCLK (Waiting for Interrupt Mode).
+    2. During ADC conversion, PCLK is used.
+
+but do we need to do sth for this?
+
+some writes
+   writel((readl(S3C2410_CLKCON) | 1 << 15),S3C2410_CLKCON);
+
+this won't be necessary, 
+
+because the initial value of the S3C2410_CLKCON[15] is 1

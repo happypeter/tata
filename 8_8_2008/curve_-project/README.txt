@@ -1,0 +1,6 @@
+when this project reaches its version9(see doc/arm_curve/..9)
+
+the curve shows up, i will stop it for somedays and go back to 
+fix the bugs later...
+
+to be continued...

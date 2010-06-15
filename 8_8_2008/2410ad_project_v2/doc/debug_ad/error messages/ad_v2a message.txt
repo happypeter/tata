@@ -1,0 +1,85 @@
+ # ./ad2         
+ad convert opened!             
+the 
+before everything, ADCDAT0=0xb000
+
+//this means if ad is not working, the output data is 0.
+
+//while b means something about the upper bits of ADCDAT0,
+
+//which i do not understand now.
+
+
+ADCCON=0x4c41  
+
+// PRSCVL and STDBM are not initial value
+//maybe they are changed by ts driver              
+
+the output data=0    
+
+//you see, before ad is wroking the data is 0
+   
+
+now,ADCCON=0x4c41
+then,ADCCON=0x4c40
+
+//ENABLE_START becames 0
+               
+hey i am printk, the output data=1012
+
+// i do not know why it is 1012
+// at leat it is not 0 anymore, which means ad is working
+
+the output data=0(order: 3, 32768    
+
+printf: out
+
+//  user space app is slower
+
+before everything, ADCDAT0=0xb3ff
+
+//at the beginning of second circle, ADCDAT0 is not 0 anymore
+
+ADCCON=0xcc41 stat                                  
+Kernel command lin
+now,ADCCON=0xcc411:2 init=/linuxrc
+then,ADCCON=0x4c40                  
+hey i am printk, the output data=1010          
+the output data=0y: 6184  
+irq: cleari
+before everything, ADCDAT0=0xb3ffADCCON=0xcc41                                            
+C
+now,ADCCON=0xcc41 data=0er        
+then,ADCCON=0x4c40put data=000      
+hey i am printk, the output data=1008driver hubfs: devfs_d                
+before everything, ADCDAT0=0xb3ffADCCON=0xcc41 data=0-                  
+S3C2410 DMA Driver,
+now,ADCCON=0xcc41tec Electronicshe
+then,ADCCON=0x4c40q 35to colou      
+hey i am printk, the output data=1009                                     
+before everything, ADCDAT0=0xb3ffADCCON=0xcc41hannel 0 at c4800000, irq 33onics6: Linux 2.6 
+now,ADCCON=0xcc41                 
+then,ADCCON=0x4c40output data       
+before everything, ADCDAT0=0xb3ffADCCON=0xcc41
+now,ADCCON=0xcc41
+then,ADCCON=0x4c40
+hey i am printk, the output data=1017
+before everything, ADCDAT0=0xb3ffADCCON=0xcc41
+now,ADCCON=0xcc41
+then,ADCCON=0x4c40
+hey i am printk, the output data=1010
+before everything, ADCDAT0=0xb3ffADCCON=0xcc41
+now,ADCCON=0xcc41
+then,ADCCON=0x4c40
+hey i am printk, the output data=1018
+ad convert closed!
+ut data=1012-----0x3f4
+printf: output data=1010-----0x3f2
+printf: output data=1013-----0x3f5
+printf: output data=1008-----0x3f0
+printf: output data=1009-----0x3f1
+printf: output data=1016-----0x3f8
+printf: output data=1023-----0x3ff
+printf: output data=1017-----0x3f9
+printf: output data=1010-----0x3f2
+printf: output data=1018-----0x3fa

@@ -1,0 +1,40 @@
+//this is sd_v2b running on a kernel without ts driver
+[root@FriendlyARM /]# insmod  ad.ko
+s3c2410_adc driver initial
+[root@FriendlyARM /]# chmod +x ad2
+[root@FriendlyARM /]# ./ad2
+ad convert opened!
+before everything, ADCTSC=0x58
+//ok
+before everything, ADCDAT0=0x8000
+//ok
+ADCCON=0x3fc5
+//ok
+now,ADCCON=0x3fc5
+//ok
+then,ADCCON=0x3fc4
+//ok
+//now a dead loop...this means conversion is not terminated.
+//eventhogh everything is as i expected
+
+**********************
+ad_v2c message
+// the only difference between b and c is prescale enable is added
+// as you can see below
+
+/ # ./ad2
+ad convert opened!
+0, ADCTSC=0x58
+
+before everything, ADCDAT0=0x8000
+
+ADCCON=0x7fc5
+
+now,ADCCON=0x7fc5
+
+then,ADCCON=0x3fc4
+
+then,0, ADCTSC=0x58
+
+//then deadloop...
+

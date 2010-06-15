@@ -1,0 +1,30 @@
+ts_driver_structure
+
+i want to change the ts driver into the adc driver
+
+in order to use clk_get() a dirty way.
+
+the structure of s3c2410ts.c is actually simple
+
+see /code/2410ts_changing/s3c2410_ts_3
+
+but finally i realize it is not that easy to make the change:
+
+1. input_dev----------------cdev
+
+   init_input_dev-----------cdev_init()
+
+2. in the ts structure no open read wirite available, so i do not know 
+
+   how to use the dirver
+
+so i give it up now, but i will do it later 
+
+shocking to find out that almost all the kernel driver use
+
+probe+remove
+
+rather than
+
+open+release+read+write
+
