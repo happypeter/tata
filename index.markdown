@@ -26,5 +26,5 @@ happypeter1983 at gmail.com
 ### snapshot
 
 <img
-href="http://sourceforge.net/project/screenshots.php?group_id=247014&ssid=96801"
-\>
+src='http://sourceforge.net/project/screenshots.php?group_id=247014&ssid=96801' alt='tata snap short' />
+
