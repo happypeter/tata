@@ -1,1 +1,0 @@
-param set linux_cmd_line "console=ttySAC0 root=/dev/nfs nfsroot=192.168.1.1:/yctek/root ip=192.168.1.12:192.168.1.1:192.168.1.1:255.255.255.0:www.yctek.com:eth0:off"

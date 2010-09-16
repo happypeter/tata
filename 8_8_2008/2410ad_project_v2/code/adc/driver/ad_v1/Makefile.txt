@@ -1,7 +1,0 @@
-KERNELDIR=/s3c-2.6/  #where the arm linux source is
-PWD := $(shell pwd)
-CROSS_COMPILE=arm-linux-
-CC= $(CROSS_COMPILE)gcc
-obj-m := ad.o 
-modules:
-	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules

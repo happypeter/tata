@@ -1,1 +1,0 @@
-see more in my blog/arm_curve
